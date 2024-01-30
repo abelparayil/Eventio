@@ -1,9 +1,7 @@
-import Button from "./Button";
-
 const Header = () => {
   return (
-    <div>
-      <Button />
+    <div className="max-w-min">
+      <h1>Eventio</h1>
     </div>
   );
 };

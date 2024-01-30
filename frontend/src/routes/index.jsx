@@ -1,9 +1,44 @@
-import React from 'react'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import LandingPage from "../pages/LandingPage";
+const Routes = ({ children }) => {
+  const routesForPublic = [
+    {
+      path: "/",
+      element: <LandingPage />,
+    },
+  ];
 
-const index = () => {
-  return (
-    <div>index</div>
-  )
-}
+  const routesForAuthenticated = [
+    {
+      path: "/user",
+      element: "<UserProtectedPages/>",
+      children: [
+        {
+          path: "/cart",
+          element: "<CartPage/>",
+        },
+      ],
+    },
+  ];
 
-export default index
+  const routesForAdmin = [
+    {
+      path: "/admin",
+      element: "<AdminProtectedPages/>",
+      children: [
+        {
+          path: "/event",
+        },
+      ],
+    },
+  ];
+
+  const router = createBrowserRouter([
+    ...routesForPublic,
+    // ...routesForAdmin,
+    // ...routesForAuthenticated,
+  ]);
+  return <RouterProvider router={router}>{children}</RouterProvider>;
+};
+
+export default Routes;
