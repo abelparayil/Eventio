@@ -19,7 +19,7 @@ const SignUp = () => {
     });
     if (userData.password == userData.repassword) {
       const response = await Auth.register(userData.email, userData.password);
-      if (response.status == 400) {
+      if (response.status == 200) {
         toast("Succesfully Created the Account");
       } else {
         toast("Check your credential");
