@@ -1,5 +1,26 @@
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <div className="h-44  bg-bluePurple">
+      <div className="flex justify-center items-center h-full gap-11  w-full text-white">
+        <div>
+          <h3>Get to Know Us</h3>
+          <p>About</p>
+          <p>VIT Bhopal</p>
+        </div>
+        <div>
+          <h3>Get to Know Us</h3>
+          <p>About</p>
+          <p>VIT Bhopal</p>
+        </div>
+        <div>
+          <h3>Get to Know Us</h3>
+          <p>About</p>
+          <p>VIT Bhopal</p>
+        </div>
+      </div>
+      <div></div>
+    </div>
+  );
 };
 
 export default Footer;

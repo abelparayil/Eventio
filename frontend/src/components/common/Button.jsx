@@ -1,5 +1,5 @@
 const Button = ({ name, bg }) => {
-  return <button className={bg + " py-1 px-4 rounded"}>{name}</button>;
+  return <button className={bg + " py-2 px-4 "}>{name}</button>;
 };
 
 export default Button;

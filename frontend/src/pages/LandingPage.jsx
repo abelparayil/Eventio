@@ -1,10 +1,18 @@
+/* eslint-disable react/no-unescaped-entities */
+
+import UpcomingEvents from "../components/events/UpcomingEvents";
+import IntroductoryText from "../components/ui/IntroductoryText";
+import LoginSignupButton from "../components/common/LoginSignupButton";
+import Banner from "../components/ui/Banner";
 import Button from "../components/common/Button";
 
 const LandingPage = () => {
   return (
-    <div className="flex justify-end">
-      <Button bg={"bg-slate-400"} name={"Login"} />
-      <Button bg={"bg-bluePurple text-white"} name={"Sign Up"} />
+    <div className="h-full">
+      <LoginSignupButton />
+      <IntroductoryText />
+      <Banner />
+      <UpcomingEvents />
     </div>
   );
 };
