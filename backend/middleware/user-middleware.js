@@ -1,7 +1,5 @@
-import User from "../models/User";
-
-export const userMiddleware = async (req, res, next) => {
-  const token = req.header("Authorization");
+export const checkUserMiddleware = async (req, res, next) => {
+  const token = req.headers.authorization;
 
   if (!token) {
     return res
