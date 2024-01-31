@@ -8,11 +8,13 @@ export default {
       white: "#ffffff",
       mercury: "#E5E5E5",
       magentaRed: "#E41076",
+      violetBlue: "#4E26B8",
     },
     fontFamily: {
       sarala: ["Sarala", "sans-serif"],
       spyRice: ["Spicy Rice", "serif"],
       satisfy: ["Satisfy", "cursive"],
+      singleDay: ["Single Day", "cursive"],
     },
   },
   plugins: [],

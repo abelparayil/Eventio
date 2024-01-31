@@ -1,10 +1,15 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
+import SignUp from "../pages/SignUp";
 const Routes = ({ children }) => {
   const routesForPublic = [
     {
       path: "/",
       element: <LandingPage />,
+    },
+    {
+      path: "/signup",
+      element: <SignUp />,
     },
   ];
 

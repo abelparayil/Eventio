@@ -23,4 +23,11 @@ const Footer = () => {
   );
 };
 
+/*css
+  display:flex,
+  justifyconchtent:center,
+  height:100%,
+  gap:10
+*/
+
 export default Footer;
