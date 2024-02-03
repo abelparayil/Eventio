@@ -15,6 +15,9 @@ const UpcomingEvents = () => {
         <EventCard />
         <EventCard />
         <EventCard />
+        <EventCard />
+        <EventCard />
+        <EventCard />
       </div>
     </div>
   );

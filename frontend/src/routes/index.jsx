@@ -1,7 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import SignUp from "../pages/SignUp";
-import SignIn from "../pages/SignIn";
+
+import AdminLogin from "../pages/AdminLogin";
+import UserLogin from "../pages/UserLogin";
 const Routes = ({ children }) => {
   const routesForPublic = [
     {
@@ -13,8 +15,12 @@ const Routes = ({ children }) => {
       element: <SignUp />,
     },
     {
-      path: "/signin",
-      element: <SignIn />,
+      path: "/admin/login",
+      element: <AdminLogin />,
+    },
+    {
+      path: "/user/login",
+      element: <UserLogin />,
     },
   ];
 

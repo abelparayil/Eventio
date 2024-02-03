@@ -3,9 +3,9 @@ import Header from "../ui/Header";
 
 const Layout = ({ children }) => {
   return (
-    <div className="relative  font-sa">
+    <div className="relative ">
       <Header />
-      <div>{children}</div>
+      <div className="h-full">{children}</div>
       <Footer />
     </div>
   );
