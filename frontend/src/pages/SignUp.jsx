@@ -1,5 +1,4 @@
 import Button from "../components/common/Button";
-import { useForm } from "react-hook-form";
 import { useUserActions } from "../services/actions/UserActions";
 const SignUp = () => {
   const {
