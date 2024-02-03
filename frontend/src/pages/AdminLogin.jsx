@@ -1,4 +1,8 @@
 import { useForm } from "react-hook-form";
+
+
+
+
 import { useAdminActions } from "../services/actions/AdminActions";
 
 const AdminLogin = () => {
@@ -9,10 +13,12 @@ const AdminLogin = () => {
     const data = adminActions.login(email, password);
     return data;
   }
+
   return (
     <div>
       <h1>Eventio</h1>
       <div>AdminLogin</div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("email", {

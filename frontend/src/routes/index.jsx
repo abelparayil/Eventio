@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import SignUp from "../pages/SignUp";
+
 import AdminLogin from "../pages/AdminLogin";
 import UserLogin from "../pages/UserLogin";
 const Routes = ({ children }) => {

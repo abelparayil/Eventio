@@ -8,7 +8,7 @@ const UpcomingEvents = () => {
           Upcoming <span className=" text-bluePurple">Events</span>
         </h1>
       </div>
-      <div className="flex p-10 gap-y-6 flex-wrap justify-between ">
+      <div className="grid grid-cols-3 gap-x-8 gap-y-12 flex p-24 gap-y-6 flex-wrap justify-between ">
         <EventCard />
         <EventCard />
         <EventCard />
