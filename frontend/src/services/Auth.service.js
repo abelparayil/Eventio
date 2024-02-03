@@ -2,10 +2,11 @@ import axios from "axios";
 
 const URL = "https://localhost:5000";
 
-const register = (email, password) => {
+const signup = (username, email, password) => {
   console.log(email, password);
   return axios
-    .post(URL + "/register", {
+    .post(URL + "/signup", {
+      username,
       email,
       password,
     })
@@ -28,7 +29,7 @@ const login = (email, password) => {
 };
 
 const Auth = {
-  register,
+  signup,
   login,
 };
 
