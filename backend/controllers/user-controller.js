@@ -20,7 +20,7 @@ export const getAllUsers = async (req, res, next) => {
 
 export const signUp = async (req, res, next) => {
   const { name, email, password } = req.body;
-
+  console.log(name);
   if (
     !name &&
     name.trim() === "" &&
@@ -32,7 +32,12 @@ export const signUp = async (req, res, next) => {
     return res.status(422).json({ message: "invalid inputs" });
   }
 
-  const hashedPassword = bcrypt.hashSync(password);
+  let hashedPassword;
+  try {
+    hashedPassword = bcrypt.hashSync(password);
+  } catch (error) {
+    console.log(error);
+  }
 
   let user;
   try {

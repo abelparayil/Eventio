@@ -8,7 +8,16 @@ import eventRouter from "./routes/event-routes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: "*", // Replace with the actual origin of your frontend
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use("/user", userRouter);

@@ -5,10 +5,10 @@ import IntroductoryText from "../components/ui/IntroductoryText";
 import LoginSignupButton from "../components/common/LoginSignupButton";
 import Banner from "../components/ui/Banner";
 
-const LandingPage = () => {
+const LandingPage = ({ isLogin }) => {
   return (
     <div className="h-full">
-      <LoginSignupButton />
+      <LoginSignupButton isLogin={isLogin} />
       <IntroductoryText />
       <Banner />
       <UpcomingEvents />
