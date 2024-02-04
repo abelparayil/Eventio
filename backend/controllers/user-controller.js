@@ -32,7 +32,7 @@ export const signUp = async (req, res, next) => {
     return res.status(422).json({ message: "invalid inputs" });
   }
 
-  let hashedPassword = bcrypt.hashSync(password);
+  const hashedPassword = bcrypt.hashSync(password);
 
   let user;
   try {
