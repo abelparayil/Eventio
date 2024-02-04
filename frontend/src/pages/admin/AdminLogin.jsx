@@ -1,9 +1,6 @@
 import { useForm } from "react-hook-form";
 
-
-
-
-import { useAdminActions } from "../services/actions/AdminActions";
+import { useAdminActions } from "../../services/actions/AdminActions";
 
 const AdminLogin = () => {
   const { register, handleSubmit } = useForm();

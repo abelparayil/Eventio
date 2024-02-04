@@ -1,11 +1,14 @@
+import { RecoilRoot } from "recoil";
 import Routes from "./Routes";
 import Layout from "./components/layout/Layout";
 
 const App = () => {
   return (
-    <Layout>
-      <Routes />
-    </Layout>
+    <RecoilRoot>
+      <Layout>
+        <Routes />
+      </Layout>
+    </RecoilRoot>
   );
 };
 

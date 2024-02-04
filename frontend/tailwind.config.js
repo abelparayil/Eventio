@@ -9,6 +9,7 @@ export default {
       mercury: "#E5E5E5",
       magentaRed: "#E41076",
       violetBlue: "#4E26B8",
+      black: "#000000",
     },
     fontFamily: {
       sarala: ["Sarala", "sans-serif"],
