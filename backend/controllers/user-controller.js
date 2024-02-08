@@ -22,12 +22,12 @@ export const signUp = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (
-    !name &&
-    name.trim() === "" &&
-    !email &&
-    email.trim() === "" &&
-    !password &&
-    password.trim() === ""
+    !name ||
+    (name && name.trim() === "") ||
+    !email ||
+    (email && email.trim() === "") ||
+    !password ||
+    (password && password.trim() === "")
   ) {
     return res.status(422).json({ message: "invalid inputs" });
   }
@@ -52,7 +52,12 @@ export const signUp = async (req, res, next) => {
 export const login = async (req, res, next) => {
   let { email, password } = req.body;
 
-  if (!email && email.trim() === "" && !password && password.trim() === "") {
+  if (
+    !email ||
+    (email && email.trim() === "") ||
+    !password ||
+    (password && password.trim() === "")
+  ) {
     return res.status(422).json({ message: "Invalid inputs" });
   }
 
