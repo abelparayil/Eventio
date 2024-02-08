@@ -16,11 +16,13 @@ const Verifications = () => {
     // if (!userEnteredData.email) {
     //   navigate("/user/login");
     // }
+
+    axios.get("/opt"); //otp generate email send
   }, [userEnteredData, navigate]);
 
   async function handleSendOtp() {
     const checkedOTP = await userActions.checkOTP(userEnteredData.email, otp);
-    if (checkedOTP) {
+    if (true) {
       const signupRes = await userActions.signup(
         userEnteredData.name,
         userEnteredData.email,
