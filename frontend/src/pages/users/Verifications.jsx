@@ -14,7 +14,7 @@ const Verifications = () => {
 
   useEffect(() => {
     // if (!userEnteredData.email) {
-    //   navigate("/user/signin");
+    //   navigate("/user/login");
     // }
   }, [userEnteredData, navigate]);
 
@@ -36,8 +36,8 @@ const Verifications = () => {
   return (
     <div>
       <OtpInput
-        containerStyle={"p-4"}
-        inputStyle={"p-2 bg-black text-white"}
+        containerStyle={""}
+        inputStyle={" "}
         value={otp}
         onChange={setOtp}
         numInputs={4}

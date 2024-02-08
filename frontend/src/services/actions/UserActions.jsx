@@ -1,7 +1,9 @@
 import axios from "axios";
-
+import { useSetRecoilState } from "recoil";
+import { authAtom } from "../../store/atoms/authAtom";
 export const useUserActions = () => {
   const URL = "http://localhost:9000";
+  const setAuth = useSetRecoilState(authAtom);
   const signup = async (name, email, password) => {
     const data = await axios.post(URL + "/user/signup", {
       name,
@@ -24,7 +26,10 @@ export const useUserActions = () => {
   };
 
   const login = async (email, password) => {
-    const data = await axios.post(URL + "/user/signin", { email, password });
+    const data = await axios.post(URL + "/user/login", { email, password });
+    if (data.status === 200) {
+      setAuth({ isAdmin: false, isLogin: true, token: data.token });
+    }
     return data;
   };
 
