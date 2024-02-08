@@ -13,16 +13,18 @@ const SignUp = () => {
   } = useForm();
   const userActions = useUserActions();
   const navigate = useNavigate();
-  const setUserData = useSetRecoilState(userDataAtom);
+  // const setUserData = useSetRecoilState(userDataAtom);
 
   async function onSubmit({ name, email, password }) {
-    const checkEmail = await userActions.checkEmail({ name, email, password });
-    if (checkEmail) {
-      navigate("/user/login");
-    } else {
-      setUserData({ name, email, password });
-      navigate("/user/signup/verfication");
-    }
+    // const checkEmail = await userActions.checkEmail({ name, email, password });
+    const resSubmit = await userActions.signup({ name, email, password });
+    return resSubmit;
+    // if (checkEmail) {
+    //   navigate("/user/login");
+    // } else {
+    //   setUserData({ name, email, password });
+    //   navigate("/user/signup/verfication");
+    // }
   }
 
   return (
@@ -31,7 +33,7 @@ const SignUp = () => {
       <div>signup to Eventio</div>
       <div>
         <Button
-          onClick={() => navigate("/user/signin")}
+          onClick={() => navigate("/user/login")}
           name={"Sign In"}
           styleclass={"bg-bluePurple"}
         />
@@ -46,13 +48,13 @@ const SignUp = () => {
             type="text"
             placeholder="Your Name"
           />
-          {errors.name ? <span>{errors.name.message}</span> : " "}
+          {errors.name ? <span>{errors.name.message}</span> : null}
           <input
             {...register("email", { required: true })}
             type="email"
             placeholder="Enter Your Email"
           />
-          {errors.email ? <span>{errors.email.message}</span> : " "}
+          {errors.email ? <span>{errors.email.message}</span> : null}
           <input
             {...register("password", {
               required: true,

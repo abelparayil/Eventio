@@ -1,10 +1,10 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Events = () => {
   return (
     <div>
       <h1>Events</h1>
-      <Link to={"create-event"}>Create Event</Link>
+      <Link to={"/admin/dashboard/create-event"}>Create Event</Link>
     </div>
   );
 };

@@ -25,7 +25,7 @@ const LoginSignupButton = ({ isLogin }) => {
         <Button
           styleclass={"bg-bluePurple rounded text-white"}
           name={"Log Out"}
-          onClick={setAuth({ isAdmin: false, token: null })}
+          onClick={setAuth({ isLogin: false, isAdmin: false, token: null })}
         />
       )}
     </div>

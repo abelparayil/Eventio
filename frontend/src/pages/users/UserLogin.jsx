@@ -1,4 +1,17 @@
+import { useForm } from "react-hook-form";
+import { useUserActions } from "../../services/actions/UserActions";
+
 const UserLogin = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const userActions = useUserActions();
+  async function handleLoginOnSubmit({ email, password }) {
+    const res = await userActions.login(email, password);
+    return res;
+  }
   return (
     <div>
       <h1>Sign In in Eventio</h1>
@@ -302,9 +315,32 @@ const UserLogin = () => {
             </div>
 
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-center"></div>
-            <form>
-              <input type="email" name="email" placeholder="email" />
-              <input type="password" name="password" placeholder="password" />
+            <form onSubmit={handleSubmit(handleLoginOnSubmit)}>
+              <input
+                {...register("email", {
+                  required: { value: true, message: "Email Should be Present" },
+                })}
+                type="email"
+                name="email"
+                placeholder="Email"
+              />
+              {errors.email ? <span>{errors.email.message}</span> : null}
+              <input
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Password Should be Present",
+                  },
+                  minLength: {
+                    value: 5,
+                    message: "Minimum Length Should be 5",
+                  },
+                })}
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              {errors.password ? <span>{errors.password.message}</span> : " "}
               <button type="submit">Sign In</button>
             </form>
           </div>
