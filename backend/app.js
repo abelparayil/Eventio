@@ -11,8 +11,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/user", userRouter);
-app.use("/event", eventRouter);
+// app.use("/user", userRouter);
+// app.use("/event", eventRouter);
+
+let data = "Vinay";
+app.post("/test", (req, res) => {
+  data = req.body;
+  console.log(data);
+  res.send("GOt it");
+});
+app.get("/getData", (req, res) => {
+  res.send(data);
+});
+
+console.log(data);
 
 mongoose
   .connect(
