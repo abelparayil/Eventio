@@ -31,6 +31,18 @@ export const signUp = async (req, res, next) => {
     return res.status(422).json({ message: "invalid inputs" });
   }
 
+  let existingUser;
+
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!existingUser) {
+    return res.status(409).json({ message: "User already exists" });
+  }
+
   const hashedPassword = bcrypt.hashSync(password);
 
   let user;
@@ -45,7 +57,7 @@ export const signUp = async (req, res, next) => {
     return res.status(500).json({ message: "Unexpected error occured" });
   }
 
-  return res.status(201).json({ user });
+  return res.status(201).json({ message: "User created successfully" });
 };
 
 export const login = async (req, res, next) => {
