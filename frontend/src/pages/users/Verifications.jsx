@@ -14,13 +14,15 @@ const Verifications = () => {
 
   useEffect(() => {
     // if (!userEnteredData.email) {
-    //   navigate("/user/signin");
+    //   navigate("/user/login");
     // }
+
+    axios.get("/opt"); //otp generate email send
   }, [userEnteredData, navigate]);
 
   async function handleSendOtp() {
     const checkedOTP = await userActions.checkOTP(userEnteredData.email, otp);
-    if (checkedOTP) {
+    if (true) {
       const signupRes = await userActions.signup(
         userEnteredData.name,
         userEnteredData.email,
@@ -36,8 +38,8 @@ const Verifications = () => {
   return (
     <div>
       <OtpInput
-        containerStyle={"p-4"}
-        inputStyle={"p-2 bg-black text-white"}
+        containerStyle={""}
+        inputStyle={" "}
         value={otp}
         onChange={setOtp}
         numInputs={4}
