@@ -12,7 +12,7 @@ import Dashboard from "../pages/admin/Dashboard.jsx";
 import Messages from "../components/ui/Messages.jsx";
 import Profile from "../components/ui/Profile.jsx";
 import Events from "../components/events/Events.jsx";
-import CreateEvent from "../components/events/CreateEvent.jsx";
+import CreateEvent from "../pages/admin/CreateEvent.jsx";
 
 const Routes = ({ children }) => {
   const emailVerify = useRecoilValue(userAtom);
