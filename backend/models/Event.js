@@ -15,13 +15,13 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
-  eventDate: {
+  eventDateAndTime: {
     type: Date,
     required: true,
-  },
-  eventTime: {
-    type: String,
-    required: true,
+    validate: {
+      validator: (date) => date > Date.now(),
+      message: "Event date must be in the future.",
+    },
   },
   eventVenue: {
     type: String,
@@ -33,7 +33,12 @@ const eventSchema = new Schema({
   eventSpeakerPhotoUrl: {
     type: String,
   },
-  bookings: [{ type: String }],
+  bookings: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Booking",
+    },
+  ],
 });
 
 export default mongoose.model("Event", eventSchema);
