@@ -2,8 +2,10 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/common/Button";
 import { useUserActions } from "../../services/actions/UserActions";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
-import { userDataAtom } from "../../store/atoms/userAtom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import { useSetRecoilState } from "recoil";
+// import { userDataAtom } from "../../store/atoms/userAtom";
 const SignUp = () => {
   const {
     register,
@@ -17,7 +19,7 @@ const SignUp = () => {
 
   async function onSubmit({ name, email, password }) {
     // const checkEmail = await userActions.checkEmail({ name, email, password });
-    const resSubmit = await userActions.signup({ name, email, password });
+    const resSubmit = await userActions.signup(name, email, password);
     return resSubmit;
     // if (checkEmail) {
     //   navigate("/user/login");
