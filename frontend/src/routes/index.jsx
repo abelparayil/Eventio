@@ -14,6 +14,7 @@ import Profile from "../components/ui/Profile.jsx";
 import Events from "../components/events/Events.jsx";
 import CreateEvent from "../pages/admin/CreateEvent.jsx";
 
+
 const Routes = ({ children }) => {
   const emailVerify = useRecoilValue(userAtom);
   const routesForPublic = [

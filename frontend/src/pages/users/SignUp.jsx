@@ -21,7 +21,6 @@ const SignUp = () => {
     // const checkEmail = await userActions.checkEmail({ name, email, password });
     const resSubmit = await userActions.signup(name, email, password);
     return resSubmit;
-
     // if (checkEmail) {
     //   navigate("/user/login");
     // } else {
