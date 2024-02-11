@@ -9,7 +9,8 @@ export const verifyUserToken = async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.userData = { email: decodedToken.email };
+    req.userEmail = { email: decodedToken.email };
+    req.userId = { id: decodedToken.id };
     next();
   } catch (err) {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
