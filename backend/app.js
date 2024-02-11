@@ -5,6 +5,7 @@ import cors from "cors";
 import userRouter from "./routes/user-routes.js";
 import eventRouter from "./routes/event-routes.js";
 import bookingRouter from "./routes/booking-routes.js";
+import adminRouter from "./routes/admin-routes.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/event", eventRouter);
 app.use("/bookings", bookingRouter);
+app.use("/admin", adminRouter);
 
 mongoose
   .connect(
