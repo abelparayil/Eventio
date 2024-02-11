@@ -1,5 +1,9 @@
 // Path: backend/models/Booking.js
 
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
+
 const bookingSchema = new Schema({
   event: {
     type: Schema.Types.ObjectId,
