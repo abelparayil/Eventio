@@ -10,7 +10,7 @@ export const useAdminActions = () => {
     return data;
   };
   const createEvent = async (formdata) => {
-    const data = await axios.post(URL + "/admin/create-event", {
+    const data = await axios.post(URL + "/event/addEvent", {
       formdata,
     });
     return data;
