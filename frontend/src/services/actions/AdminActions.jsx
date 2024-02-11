@@ -9,5 +9,11 @@ export const useAdminActions = () => {
     });
     return data;
   };
-  return { login };
+  const createEvent = async (formdata) => {
+    const data = await axios.post(URL + "/admin/create-event", {
+      formdata,
+    });
+    return data;
+  };
+  return { login, createEvent };
 };

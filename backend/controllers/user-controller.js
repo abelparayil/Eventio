@@ -39,7 +39,7 @@ export const signUp = async (req, res, next) => {
     return console.log(err);
   }
 
-  if (!existingUser) {
+  if (existingUser) {
     return res.status(409).json({ message: "User already exists" });
   }
 

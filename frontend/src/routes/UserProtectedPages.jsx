@@ -4,6 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const UserProtectedPages = () => {
   const auth = useRecoilValue(authAtom);
+  console.log(auth);
   return auth.token && !auth.isAdmin ? (
     <Outlet />
   ) : (

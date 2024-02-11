@@ -6,6 +6,10 @@ import { authAtom } from "../../store/atoms/authAtom";
 const LoginSignupButton = ({ isLogin }) => {
   const navigate = useNavigate();
   const setAuth = useSetRecoilState(authAtom);
+  function handleLogout() {
+    localStorage.removeItem("user");
+    setAuth((prev) => ({ ...prev, isLogin: false }));
+  }
   return (
     <div className="flex justify-end absolute top-4 right-4">
       {!isLogin ? (
@@ -25,7 +29,7 @@ const LoginSignupButton = ({ isLogin }) => {
         <Button
           styleclass={"bg-bluePurple rounded text-white"}
           name={"Log Out"}
-          onClick={setAuth({ isLogin: false, isAdmin: false, token: null })}
+          onClick={handleLogout}
         />
       )}
     </div>

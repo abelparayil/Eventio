@@ -17,6 +17,9 @@ export default {
       satisfy: ["Satisfy", "cursive"],
       singleDay: ["Single Day", "cursive"],
     },
+    backgroundImage: {
+      mainBg: "url('/src/assets/images/bgEventio.jpg')",
+    },
   },
   plugins: [],
 };
