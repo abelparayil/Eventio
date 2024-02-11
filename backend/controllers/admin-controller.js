@@ -1,4 +1,5 @@
 import Admin from "../models/Admin.js";
+import bcrypt from "bcryptjs";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -34,13 +35,7 @@ export const adminSignup = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 12);
     const newAdmin = new Admin({ email, password: hashedPassword });
-    const result = await newAdmin.save();
-    const token = jwt.sign(
-      { email: result.email, id: result._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-    res.status(201).json({ result, token });
+    res.status(201).json({ message: "Admin created successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
