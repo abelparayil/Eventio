@@ -6,17 +6,16 @@ import UserLogin from "../pages/users/UserLogin";
 import Home from "../pages/users/Home";
 import UserProtectedPages from "./UserProtectedPages.jsx";
 import Verifications from "../pages/users/Verifications.jsx";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../store/atoms/userAtom.js";
+// import { useRecoilValue } from "recoil";
+// import { userAtom } from "../store/atoms/userAtom.js";
 import Dashboard from "../pages/admin/Dashboard.jsx";
 import Messages from "../components/ui/Messages.jsx";
 import Profile from "../components/ui/Profile.jsx";
 import Events from "../components/events/Events.jsx";
 import CreateEvent from "../pages/admin/CreateEvent.jsx";
 
-
 const Routes = ({ children }) => {
-  const emailVerify = useRecoilValue(userAtom);
+  // const emailVerify = useRecoilValue(userAtom);
   const routesForPublic = [
     {
       path: "/",
