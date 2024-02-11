@@ -1,3 +1,4 @@
+import { ZodError } from "zod";
 import Event from "../models/Event.js";
 import { eventSchema } from "../models/zodSchemas.js";
 
