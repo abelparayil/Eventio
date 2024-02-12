@@ -4,6 +4,6 @@ import { adminLogin, adminSignup } from "../controllers/admin-controller.js";
 const adminRouter = express.Router();
 
 adminRouter.post("/signup", adminSignup);
-adminRouter.get("/login", adminLogin);
+adminRouter.post("/login", adminLogin);
 
 export default adminRouter;

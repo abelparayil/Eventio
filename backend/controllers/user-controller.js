@@ -98,3 +98,43 @@ export const login = async (req, res, next) => {
 
   return res.status(200).json({ message: "login successful", token });
 };
+
+export const resetPassword = async (req, res, next) => {
+  const { email, newPassword } = req.body;
+
+  if (
+    !email ||
+    (email && email.trim() === "") ||
+    !newPassword ||
+    (newPassword && newPassword.trim() === "")
+  ) {
+    return res.status(422).json({ message: "Invalid inputs" });
+  }
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!existingUser) {
+    return res.status(404).json({ message: "User doesn't exist" });
+  }
+
+  const hashedPassword = bcrypt.hashSync(newPassword);
+
+  try {
+    existingUser.password = hashedPassword;
+    existingUser = await existingUser.save();
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!existingUser) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  return res.status(200).json({ message: "Password reset successful" });
+};
