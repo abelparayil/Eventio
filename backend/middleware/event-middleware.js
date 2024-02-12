@@ -11,7 +11,6 @@ export const verifyAdminToken = async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(modifiedToken, process.env.JWT_SECRET_KEY);
-    console.log(decodedToken);
     if (decodedToken.role !== "admin") {
       return res.status(403).json({ message: "Forbidden: Admin access only" });
     }

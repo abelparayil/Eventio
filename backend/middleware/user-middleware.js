@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export const verifyUserToken = async (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -7,8 +9,10 @@ export const verifyUserToken = async (req, res, next) => {
       .json({ message: "Unauthorized: No token provided " });
   }
 
+  const modifiedToken = token.split(" ")[1];
+
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const decodedToken = jwt.verify(modifiedToken, process.env.JWT_SECRET_KEY);
     req.userEmail = { email: decodedToken.email };
     req.userId = { id: decodedToken.id };
     next();
