@@ -7,7 +7,7 @@ import { verifyUserToken } from "../middleware/user-middleware.js";
 
 const bookingRouter = express.Router();
 
-bookingRouter.post("/bookEvent", verifyUserToken, addBooking);
+bookingRouter.post("/bookEvent/:eventId", verifyUserToken, addBooking);
 bookingRouter.delete("/cancelBooking/:id", verifyUserToken, deleteBooking);
 
 export default bookingRouter;
