@@ -100,23 +100,15 @@ export const login = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res, next) => {
-  const { email, newPassword } = req.body;
-
-  if (
-    !email ||
-    (email && email.trim() === "") ||
-    !newPassword ||
-    (newPassword && newPassword.trim() === "")
-  ) {
-    return res.status(422).json({ message: "Invalid inputs" });
-  }
+  const userId = req.userId.id;
+  const newPassword = req.body.newPassword;
 
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ email });
+    existingUser = await User.findById(userId);
   } catch (err) {
-    return console.log(err);
+    return res.status(404).json({ message: "User not found" });
   }
 
   if (!existingUser) {
@@ -129,7 +121,7 @@ export const resetPassword = async (req, res, next) => {
     existingUser.password = hashedPassword;
     existingUser = await existingUser.save();
   } catch (err) {
-    return console.log(err);
+    return res.status(500).json({ message: "Unexpected error occured" });
   }
 
   if (!existingUser) {
