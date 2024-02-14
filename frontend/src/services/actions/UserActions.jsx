@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { authAtom } from "../../store/atoms/authAtom";
+import { useSetRecoilState } from "recoil";
+import { authAtom } from "../../store/atoms/authatom";
+
 export const useUserActions = () => {
   const URL = "http://localhost:9000";
-  const [auth, setAuth] = useRecoilState(authAtom);
-  console.log(auth);
+  const setAuth = useSetRecoilState(authAtom);
+
   const signup = async (name, email, password) => {
     const data = await axios.post(URL + "/user/signup", {
       name,
@@ -28,12 +29,12 @@ export const useUserActions = () => {
 
   const login = async (email, password) => {
     const res = await axios.post(URL + "/user/login", { email, password });
-    console.log(res.data);
+    // console.log(res.data);
     if (res.status === 200) {
       localStorage.setItem("user", res.data.token);
-      setAuth((prev) => ({ ...prev, isLogin: true }));
+      setAuth((prev) => ({ ...prev, token: res.data.token }));
     }
-    return res.data;
+    return res;
   };
 
   return { signup, login, checkEmail, checkOTP };

@@ -1,4 +1,8 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import SignUp from "../pages/users/SignUp";
 import AdminLogin from "../pages/admin/AdminLogin";
@@ -8,59 +12,47 @@ import UserProtectedPages from "./UserProtectedPages.jsx";
 import Verifications from "../pages/users/Verifications.jsx";
 // import { useRecoilValue } from "recoil";
 // import { userAtom } from "../store/atoms/userAtom.js";
+import Layout from "../components/layout/Layout.jsx";
 import Dashboard from "../pages/admin/Dashboard.jsx";
 import Messages from "../components/ui/Messages.jsx";
 import Profile from "../components/ui/Profile.jsx";
-import Events from "../components/events/Events.jsx";
+import Events from "../components/events/AdminEvents.jsx";
 import CreateEvent from "../pages/admin/CreateEvent.jsx";
+import AdminProtectedPages from "./AdminProtectedPages.jsx";
+import ProtectedRoutes from "./ProtectedRoutes.jsx";
 
 const Routes = ({ children }) => {
   // const emailVerify = useRecoilValue(userAtom);
-  const routesForPublic = [
+  const routesForAdmin = [
     {
       path: "/",
-      element: <LandingPage isLogin={false} />,
-    },
-    {
-      path: "/user/signup",
-      element: <SignUp />,
-    },
-    {
-      path: "/admin/login",
-      element: <AdminLogin />,
-    },
-    {
-      path: "/user/login",
-      element: <UserLogin />,
-    },
-    {
-      path: "/user/signup/verification",
-      element: <Verifications />,
-    },
-    {
-      path: "/admin/dashboard",
-      element: <Dashboard />,
+      element: <AdminProtectedPages />,
       children: [
         {
-          path: "messages",
-          element: <Messages />,
+          path: "admin/dashboard",
+          element: <Dashboard />,
+          children: [
+            {
+              path: "messages",
+              element: <Messages />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+            {
+              path: "events",
+              element: <Events />,
+            },
+          ],
         },
         {
-          path: "profile",
-          element: <Profile />,
-        },
-        {
-          path: "events",
-          element: <Events />,
+          path: "admin/dashboard/create-event",
+          element: <CreateEvent />,
         },
       ],
     },
-    {
-      path: "/admin/dashboard/create-event",
-      element: <CreateEvent />,
-    },
   ];
-
   const routesForAuthenticated = [
     {
       path: "/",
@@ -73,27 +65,51 @@ const Routes = ({ children }) => {
       ],
     },
   ];
-
-  const routesForAdmin = [
+  const routesForLayout = [
     {
-      path: "/admin",
-      element: "<AdminProtectedPages/>",
+      element: <Layout />,
       children: [
         {
-          path: "/event",
+          path: "/",
+          element: <LandingPage isLogin={false} />,
+        },
+        {
+          path: "/user/signup/verification",
+          element: <Verifications />,
+        },
+        ...routesForAdmin,
+        ...routesForAuthenticated,
+      ],
+    },
+  ];
+  const routesForNonLayout = [
+    {
+      path: "/",
+      element: <ProtectedRoutes />,
+      children: [
+        {
+          path: "/user/signup",
+          element: <SignUp />,
+        },
+        {
+          path: "/admin/login",
+          element: <AdminLogin />,
+        },
+        {
+          path: "/user/login",
+          element: <UserLogin />,
         },
       ],
     },
   ];
 
   const router = createBrowserRouter([
-    ...routesForPublic,
-    // ...routesForAdmin,
-    ...routesForAuthenticated,
-    // {
-    //   path: "*",
-    //   element: <Navigate to={"/user/login"} />,
-    // },
+    ...routesForLayout,
+    ...routesForNonLayout,
+    {
+      path: "*",
+      element: <Navigate to={"/user/login"} />,
+    },
   ]);
   return <RouterProvider router={router}>{children}</RouterProvider>;
 };

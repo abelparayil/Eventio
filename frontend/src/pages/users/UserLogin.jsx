@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useUserActions } from "../../services/actions/UserActions";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
   const {
@@ -7,9 +8,14 @@ const UserLogin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
   const userActions = useUserActions();
   async function handleLoginOnSubmit({ email, password }) {
     const res = await userActions.login(email, password);
+    console.log(res);
+    if (res.status === 200) {
+      navigate("/user/home");
+    }
     return res;
   }
   return (

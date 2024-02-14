@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <div className="h-44  bg-bluePurple">
       <div className="flex justify-center items-baseline  gap-4 p-2  w-full text-white text-sm">
@@ -22,7 +25,7 @@ const Footer = () => {
             {" "}
             <b>Organise an Event</b>
           </h3>
-          <p>Admin</p>
+          <p onClick={() => navigate("/admin/login")}>Admin</p>
           <p>
             Inform Admin <br /> About an Event
           </p>
