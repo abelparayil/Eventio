@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 export const getAllUsers = async (req, res, next) => {
   let users;
-
   try {
     users = await User.find();
   } catch (err) {
@@ -22,14 +21,26 @@ export const signUp = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (
-    !name &&
-    name.trim() === "" &&
-    !email &&
-    email.trim() === "" &&
-    !password &&
-    password.trim() === ""
+    !name ||
+    (name && name.trim() === "") ||
+    !email ||
+    (email && email.trim() === "") ||
+    !password ||
+    (password && password.trim() === "")
   ) {
     return res.status(422).json({ message: "invalid inputs" });
+  }
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (existingUser) {
+    return res.status(409).json({ message: "User already exists" });
   }
 
   const hashedPassword = bcrypt.hashSync(password);
@@ -46,13 +57,18 @@ export const signUp = async (req, res, next) => {
     return res.status(500).json({ message: "Unexpected error occured" });
   }
 
-  return res.status(201).json({ user });
+  return res.status(201).json({ message: "User created successfully" });
 };
 
 export const login = async (req, res, next) => {
   let { email, password } = req.body;
 
-  if (!email && email.trim() === "" && !password && password.trim() === "") {
+  if (
+    !email ||
+    (email && email.trim() === "") ||
+    !password ||
+    (password && password.trim() === "")
+  ) {
     return res.status(422).json({ message: "Invalid inputs" });
   }
 
@@ -75,7 +91,7 @@ export const login = async (req, res, next) => {
   }
 
   const token = jwt.sign(
-    { name: existingUser.name, email: existingUser.email },
+    { email: existingUser.email, id: existingUser._id },
     process.env.JWT_SECRET_KEY,
     { expiresIn: "1h" }
   );

@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/common/Button";
+import { useUserActions } from "../../services/actions/UserActions";
 import { useForm } from "react-hook-form";
-import Button from "../components/common/Button";
-import { useUserActions } from "../services/actions/UserActions";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import { useSetRecoilState } from "recoil";
+// import { userDataAtom } from "../../store/atoms/userAtom";
 const SignUp = () => {
   const {
     register,
@@ -9,19 +14,31 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const userActions = useUserActions();
-  function onSubmit({ name, email, password }) {
-    // console.log(name, email, password);
-    const data = userActions.signup({ name, email, password });
-    console.log(data);
+  const navigate = useNavigate();
+  // const setUserData = useSetRecoilState(userDataAtom);
+
+  async function onSubmit({ name, email, password }) {
+    // const checkEmail = await userActions.checkEmail({ name, email, password });
+    const resSubmit = await userActions.signup(name, email, password);
+    return resSubmit;
+    // if (checkEmail) {
+    //   navigate("/user/login");
+    // } else {
+    //   setUserData({ name, email, password });
+    //   navigate("/user/signup/verfication");
+    // }
   }
 
-  console.log(errors);
   return (
     <div>
       <div>eventio</div>
       <div>signup to Eventio</div>
       <div>
-        <Button name={"Sign In"} styleclass={"bg-bluePurple"} />
+        <Button
+          onClick={() => navigate("/user/login")}
+          name={"Sign In"}
+          styleclass={"bg-bluePurple"}
+        />
       </div>
       <div>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -33,13 +50,13 @@ const SignUp = () => {
             type="text"
             placeholder="Your Name"
           />
-          {errors.name ? <span>{errors.name.message}</span> : " "}
+          {errors.name ? <span>{errors.name.message}</span> : null}
           <input
             {...register("email", { required: true })}
             type="email"
             placeholder="Enter Your Email"
           />
-          {errors.email ? <span>{errors.email.message}</span> : " "}
+          {errors.email ? <span>{errors.email.message}</span> : null}
           <input
             {...register("password", {
               required: true,

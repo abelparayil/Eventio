@@ -1,20 +1,20 @@
 import jwt from "jsonwebtoken";
 
-export const verifyUserToken = async (req, res, next) => {
+export const verifyAdminToken = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized: No token provided " });
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
 
   const modifiedToken = token.split(" ")[1];
 
   try {
     const decodedToken = jwt.verify(modifiedToken, process.env.JWT_SECRET_KEY);
-    req.userEmail = { email: decodedToken.email };
-    req.userId = { id: decodedToken.id };
+    if (decodedToken.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden: Admin access only" });
+    }
+    req.userData = { email: decodedToken.email };
     next();
   } catch (err) {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });

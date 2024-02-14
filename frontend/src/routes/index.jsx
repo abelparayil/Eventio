@@ -1,17 +1,28 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
-import SignUp from "../pages/SignUp";
+import SignUp from "../pages/users/SignUp";
+import AdminLogin from "../pages/admin/AdminLogin";
+import UserLogin from "../pages/users/UserLogin";
+import Home from "../pages/users/Home";
+import UserProtectedPages from "./UserProtectedPages.jsx";
+import Verifications from "../pages/users/Verifications.jsx";
+// import { useRecoilValue } from "recoil";
+// import { userAtom } from "../store/atoms/userAtom.js";
+import Dashboard from "../pages/admin/Dashboard.jsx";
+import Messages from "../components/ui/Messages.jsx";
+import Profile from "../components/ui/Profile.jsx";
+import Events from "../components/events/Events.jsx";
+import CreateEvent from "../pages/admin/CreateEvent.jsx";
 
-import AdminLogin from "../pages/AdminLogin";
-import UserLogin from "../pages/UserLogin";
 const Routes = ({ children }) => {
+  // const emailVerify = useRecoilValue(userAtom);
   const routesForPublic = [
     {
       path: "/",
-      element: <LandingPage />,
+      element: <LandingPage isLogin={false} />,
     },
     {
-      path: "/signup",
+      path: "/user/signup",
       element: <SignUp />,
     },
     {
@@ -22,16 +33,42 @@ const Routes = ({ children }) => {
       path: "/user/login",
       element: <UserLogin />,
     },
+    {
+      path: "/user/signup/verification",
+      element: <Verifications />,
+    },
+    {
+      path: "/admin/dashboard",
+      element: <Dashboard />,
+      children: [
+        {
+          path: "messages",
+          element: <Messages />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
+        {
+          path: "events",
+          element: <Events />,
+        },
+      ],
+    },
+    {
+      path: "/admin/dashboard/create-event",
+      element: <CreateEvent />,
+    },
   ];
 
   const routesForAuthenticated = [
     {
-      path: "/user",
-      element: "<UserProtectedPages/>",
+      path: "/",
+      element: <UserProtectedPages />,
       children: [
         {
-          path: "/cart",
-          element: "<CartPage/>",
+          path: "/user/home",
+          element: <Home />,
         },
       ],
     },
@@ -52,7 +89,11 @@ const Routes = ({ children }) => {
   const router = createBrowserRouter([
     ...routesForPublic,
     // ...routesForAdmin,
-    // ...routesForAuthenticated,
+    ...routesForAuthenticated,
+    // {
+    //   path: "*",
+    //   element: <Navigate to={"/user/login"} />,
+    // },
   ]);
   return <RouterProvider router={router}>{children}</RouterProvider>;
 };

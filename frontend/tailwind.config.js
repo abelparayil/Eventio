@@ -10,7 +10,8 @@ export default {
       magentaRed: "#E41076",
       violetBlue: "#4E26B8",
       ghostWhite: '#F8F8FA',
-      grey: '#7E7E7E'
+      grey: '#7E7E7E',
+      black: "#000000",
     },
     fontFamily: {
       sarala: ["Sarala", "sans-serif"],
@@ -19,6 +20,9 @@ export default {
       singleDay: ["Single Day", "cursive"],
       salsa: ["Salsa", "cursive"],
       sansita: ["Sansita"],
+    },
+    backgroundImage: {
+      mainBg: "url('/src/assets/images/bgEventio.jpg')",
     },
   },
   plugins: [],
