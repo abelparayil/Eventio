@@ -78,3 +78,7 @@ export const resetPassword = async (req, res) => {
 
   return res.status(200).json({ message: "Password reset successful" });
 };
+
+export const isAdmin = async (req, res) => {
+  return res.status(200).json({ message: "Admin verified", isAdmin: true });
+};
