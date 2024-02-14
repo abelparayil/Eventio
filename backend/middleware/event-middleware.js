@@ -14,7 +14,8 @@ export const verifyAdminToken = async (req, res, next) => {
     if (decodedToken.role !== "admin") {
       return res.status(403).json({ message: "Forbidden: Admin access only" });
     }
-    req.userData = { email: decodedToken.email };
+    req.adminEmail = { email: decodedToken.email };
+    req.adminId = { id: decodedToken.id };
     next();
   } catch (err) {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });

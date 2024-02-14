@@ -98,3 +98,35 @@ export const login = async (req, res, next) => {
 
   return res.status(200).json({ message: "login successful", token });
 };
+
+export const resetPassword = async (req, res, next) => {
+  const userId = req.userId.id;
+  const newPassword = req.body.newPassword;
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findById(userId);
+  } catch (err) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  if (!existingUser) {
+    return res.status(404).json({ message: "User doesn't exist" });
+  }
+
+  const hashedPassword = bcrypt.hashSync(newPassword);
+
+  try {
+    existingUser.password = hashedPassword;
+    existingUser = await existingUser.save();
+  } catch (err) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  if (!existingUser) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  return res.status(200).json({ message: "Password reset successful" });
+};
