@@ -9,4 +9,5 @@ adminRouter.post("/signup", adminSignup);
 adminRouter.post("/login", adminLogin);
 adminRouter.post("/resetPassword", verifyAdminToken, resetPassword);
 
+
 export default adminRouter;

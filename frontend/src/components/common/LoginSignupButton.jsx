@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-import { useSetRecoilState } from "recoil";
-import { authAtom } from "../../store/atoms/authAtom";
 
 const LoginSignupButton = ({ isLogin }) => {
   const navigate = useNavigate();
-  const setAuth = useSetRecoilState(authAtom);
+
   function handleLogout() {
     localStorage.removeItem("user");
-    setAuth((prev) => ({ ...prev, isLogin: false }));
+    navigate("/user/login");
   }
   return (
     <div className="flex justify-end absolute top-4 right-4">

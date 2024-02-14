@@ -1,16 +1,10 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import AdminSideBar from "../../components/ui/AdminSideBar";
 
 const Dashboard = () => {
   return (
-    <div>
-      <div>Dashboard</div>
-      <div>
-        <Link className="bg-bluePurple" to={"events"}>
-          Events
-        </Link>
-        <Link to={"messages"}>Messages</Link>
-        <Link to={"profile"}>Profile</Link>
-      </div>
+    <div className="h-screen bg-mainBg flex gap-2">
+      <AdminSideBar />
       <Outlet />
     </div>
   );

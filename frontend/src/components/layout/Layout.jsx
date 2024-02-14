@@ -1,11 +1,14 @@
+import { Outlet } from "react-router-dom";
 import Footer from "../ui/Footer";
 import Header from "../ui/Header";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <div className="relative ">
       <Header />
-      <div className="h-full">{children}</div>
+      <div className="h-full">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

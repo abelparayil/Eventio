@@ -4,7 +4,5 @@ export const authAtom = atom({
   key: "authAtom",
   default: {
     token: localStorage.getItem("user"),
-    isAdmin: false,
-    isLogin: false,
   },
 });

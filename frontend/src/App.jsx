@@ -6,9 +6,7 @@ const App = () => {
   return (
     <RecoilRoot>
       <ToastContainer />
-      <Layout>
-        <Routes />
-      </Layout>
+      <Routes />
     </RecoilRoot>
   );
 };

@@ -1,15 +1,14 @@
-import { useRecoilValue } from "recoil";
-import { authAtom } from "../store/atoms/authAtom";
+import { authAtom } from "../store/atoms/authatom.js";
 import { Navigate, Outlet } from "react-router-dom";
+import { isAdminSelector } from "../store/selectors/isAdminSelector";
+import { useRecoilValue } from "recoil";
 
 const UserProtectedPages = () => {
   const auth = useRecoilValue(authAtom);
-  console.log(auth);
-  return auth.token && !auth.isAdmin ? (
-    <Outlet />
-  ) : (
-    <Navigate to={"/user/login"} />
-  );
+  // const isAdmin = useRecoilValue(isAdminSelector);
+  const isAdmin = false;
+
+  return auth.token && !isAdmin ? <Outlet /> : <Navigate to={"/user/login"} />;
 };
 
 export default UserProtectedPages;
