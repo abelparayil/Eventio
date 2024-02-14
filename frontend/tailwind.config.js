@@ -9,12 +9,16 @@ export default {
       mercury: "#E5E5E5",
       magentaRed: "#E41076",
       violetBlue: "#4E26B8",
+      ghostWhite: '#F8F8FA',
+      grey: '#7E7E7E'
     },
     fontFamily: {
       sarala: ["Sarala", "sans-serif"],
       spyRice: ["Spicy Rice", "serif"],
       satisfy: ["Satisfy", "cursive"],
       singleDay: ["Single Day", "cursive"],
+      salsa: ["Salsa", "cursive"],
+      sansita: ["Sansita"],
     },
   },
   plugins: [],
