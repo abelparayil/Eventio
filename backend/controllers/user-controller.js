@@ -130,3 +130,9 @@ export const resetPassword = async (req, res, next) => {
 
   return res.status(200).json({ message: "Password reset successful" });
 };
+
+export const isUser = async (req, res, next) => {
+  return res
+    .status(200)
+    .json({ message: "User is authenticated", isUser: true });
+};

@@ -13,5 +13,6 @@ userRouter.get("/", getAllUsers);
 userRouter.post("/signup", signUp);
 userRouter.post("/login", login);
 userRouter.post("/resetPassword", verifyUserToken, resetPassword);
+userRouter.get("isUser", verifyUserToken, isUser);
 
 export default userRouter;
