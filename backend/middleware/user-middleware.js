@@ -13,6 +13,9 @@ export const verifyUserToken = async (req, res, next) => {
 
   try {
     const decodedToken = jwt.verify(modifiedToken, process.env.JWT_SECRET_KEY);
+    if (decodedToken.role !== "user") {
+      return res.status(403).json({ message: "Forbidden: User access only" });
+    }
     req.userEmail = { email: decodedToken.email };
     req.userId = { id: decodedToken.id };
     next();
