@@ -25,7 +25,7 @@ const UserLogin = () => {
       <div className="flex h-screen bg-ghostWhite">
         <div className="w-full bg-gray-100 lg:w-7/12 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
-            <h1 className="text-3xl font-semibold mb-6 text-black text-center bg-[url('../assets/images/login.png')]">
+            <h1 className="text-3xl font-semibold mb-6 text-black text-center">
               Sign In to Eventio
             </h1>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-center">
@@ -148,6 +148,9 @@ const UserLogin = () => {
             </div>
           </div>
         </div>
+
+
+        
         <div className="hidden lg:flex items-center justify-center flex-1 text-black ">
           <img
             src={loginImage}
