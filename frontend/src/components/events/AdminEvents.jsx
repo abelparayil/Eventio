@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
 import AdminEventCard from "./AdminEventCard";
-import Button from "../common/Button";
+import AdminAddEventCard from "./AdminAddEventCard";
 
 const Events = () => {
   return (
@@ -9,6 +8,7 @@ const Events = () => {
         Welcome Administrator
       </h1>
       <div className="grid grid-cols-12 gap-3  sm:gap-5  pr-5 ">
+        <AdminAddEventCard />
         <AdminEventCard />
         <AdminEventCard />
         <AdminEventCard />
@@ -24,14 +24,6 @@ const Events = () => {
         <AdminEventCard />
         <AdminEventCard />
         <AdminEventCard />
-      </div>
-      <div className="flex justify-center my-3">
-        <Link to={"/admin/dashboard/create-event"}>
-          <Button
-            name={"Add Event"}
-            styleclass={"bg-bluePurple rounded px-11 text-white"}
-          />
-        </Link>
       </div>
     </div>
   );

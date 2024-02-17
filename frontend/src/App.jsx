@@ -1,12 +1,14 @@
 import { RecoilRoot } from "recoil";
 import Routes from "./Routes";
-import Layout from "./components/layout/Layout";
 import { ToastContainer } from "react-toastify";
+import React from "react";
 const App = () => {
   return (
     <RecoilRoot>
       <ToastContainer />
-      <Routes />
+      <React.Suspense fallback={"....Loading"}>
+        <Routes />
+      </React.Suspense>
     </RecoilRoot>
   );
 };

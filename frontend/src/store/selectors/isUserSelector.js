@@ -3,19 +3,18 @@ import { authAtom } from "../atoms/authatom";
 import axios from "axios";
 
 const URL = "http://localhost:9000/";
-export const isAdminSelector = selector({
-  key: "isAdminSelector",
+export const isUserSelector = selector({
+  key: "isUserSelector",
   get: async ({ get }) => {
     try {
       const token = get(authAtom).token;
-      console.log(token);
-      const res = await axios.get(URL + "admin/isAdmin", {
+      const res = await axios.get(URL + "user/isUser", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (res.status == 200 && res.data.isAdmin) {
-        return res.data.isAdmin;
+      if (res.status == 200 && res.data.isUser) {
+        return res.data.isUser;
       } else {
         return false;
       }
