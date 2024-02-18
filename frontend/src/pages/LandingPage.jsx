@@ -7,7 +7,7 @@ import Banner from "../components/ui/Banner";
 
 const LandingPage = ({ isLogin }) => {
   return (
-    <div className="h-full">
+    <div className="h-full bg-ghostWhite">
       <LoginSignupButton isLogin={isLogin} />
       <IntroductoryText />
       <Banner />
