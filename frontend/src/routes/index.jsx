@@ -10,8 +10,6 @@ import UserLogin from "../pages/users/UserLogin";
 import Home from "../pages/users/Home";
 import UserProtectedPages from "./UserProtectedPages.jsx";
 import Verifications from "../pages/users/Verifications.jsx";
-// import { useRecoilValue } from "recoil";
-// import { userAtom } from "../store/atoms/userAtom.js";
 import Layout from "../components/layout/Layout.jsx";
 import Dashboard from "../pages/admin/Dashboard.jsx";
 import Messages from "../components/ui/Messages.jsx";
@@ -20,9 +18,17 @@ import Events from "../components/events/AdminEvents.jsx";
 import CreateEvent from "../pages/admin/CreateEvent.jsx";
 import AdminProtectedPages from "./AdminProtectedPages.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
+import { isUserSelector } from "../store/selectors/isUserSelector.js";
+import { isAdminSelector } from "../store/selectors/isAdminSelector.js";
+import { useRecoilValue } from "recoil";
+import EventDetails from "../pages/users/EventDetails.jsx";
 
 const Routes = ({ children }) => {
   // const emailVerify = useRecoilValue(userAtom);
+  const isUser = useRecoilValue(isUserSelector);
+  const isAdmin = useRecoilValue(isAdminSelector);
+  console.log("IsUser", isUser);
+  console.log("IsAdmin", isAdmin);
   const routesForAdmin = [
     {
       path: "/",
@@ -61,6 +67,10 @@ const Routes = ({ children }) => {
         {
           path: "/user/home",
           element: <Home />,
+        },
+        {
+          path: "/user/event/:id",
+          element: <EventDetails />,
         },
       ],
     },

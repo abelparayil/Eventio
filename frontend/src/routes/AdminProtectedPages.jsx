@@ -5,8 +5,9 @@ import { isAdminSelector } from "../store/selectors/isAdminSelector";
 
 const AdminProtectedPages = () => {
   const auth = useRecoilValue(authAtom);
-  // const isAdmin = useRecoilValue(isAdminSelector);
-  const isAdmin = true;
+  const isAdmin = useRecoilValue(isAdminSelector);
+  console.log(isAdmin);
+  // console.log(isAdmin);
   return auth.token && isAdmin ? <Outlet /> : <Navigate to={"/admin/login"} />;
 };
 
