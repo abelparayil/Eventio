@@ -16,6 +16,7 @@ export const verifyAdminToken = async (req, res, next) => {
     }
     req.adminEmail = { email: decodedToken.email };
     req.adminId = { id: decodedToken.id };
+    console.log(Date.now());
     next();
   } catch (err) {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });

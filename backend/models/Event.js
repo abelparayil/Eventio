@@ -3,18 +3,21 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-  title: {
+  eventTitle: {
     type: String,
     required: true,
   },
-  description: {
+  category: {
     type: String,
     required: true,
   },
-  posterUrl: {
-    type: String,
-    required: true,
-  },
+  eventImages: [
+    {
+      imgName: String,
+      imgPath: String,
+      imgType: String,
+    },
+  ],
   eventDateAndTime: {
     type: Date,
     required: true,
@@ -23,15 +26,13 @@ const eventSchema = new Schema({
       message: "Event date must be in the future.",
     },
   },
+  ticketPrice: {
+    type: Number,
+    required: true,
+  },
   eventVenue: {
     type: String,
     required: true,
-  },
-  eventSpeaker: {
-    type: String,
-  },
-  eventSpeakerPhotoUrl: {
-    type: String,
   },
   bookings: [
     {
