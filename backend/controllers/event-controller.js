@@ -25,8 +25,6 @@ export const getAllEvents = async (req, res, next) => {
         eventImages: event.eventImages.map((image) => {
           return {
             imgName: image.imgName,
-            imgPath: `http://localhost:5000/${image.imgPath}`, // `http://localhost:5000/${image.imgPath}
-            imgType: image.imgType,
           };
         }),
         eventDateAndTime: event.eventDateAndTime,
@@ -35,7 +33,7 @@ export const getAllEvents = async (req, res, next) => {
         description: event.description,
       };
     });
-    res.status(200).json(events);
+    res.status(200).json(eventsWithImages);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -80,10 +78,24 @@ export const addEvent = async (req, res, next) => {
 export const getEventById = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
-    if (!event) {
+    const eventWithImages = {
+      _id: event._id,
+      eventTitle: event.eventTitle,
+      category: event.category,
+      eventImages: event.eventImages.map((image) => {
+        return {
+          imgName: image.imgName,
+        };
+      }),
+      eventDateAndTime: event.eventDateAndTime,
+      eventVenue: event.eventVenue,
+      ticketPrice: event.ticketPrice,
+      description: event.description,
+    };
+    if (!eventWithImages) {
       return res.status(404).json({ message: "Event not found" });
     }
-    res.status(200).json(event);
+    res.status(200).json(eventWithImages);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -98,14 +110,12 @@ export const updateEvent = async (req, res, next) => {
       return res.status(404).json({ message: "Event not found" });
     }
 
-    event.title = eventData.title;
-    event.description = eventData.description;
-    event.posterUrl = eventData.posterUrl;
-    event.eventDate = eventData.eventDate;
-    event.eventTime = eventData.eventTime;
+    event.eventTitle = eventData.eventTitle;
+    event.category = eventData.category;
+    event.eventDateAndTime = new Date(eventData.eventDateAndTime);
     event.eventVenue = eventData.eventVenue;
-    event.eventSpeaker = eventData.eventSpeaker;
-    event.eventSpeakerPhotoUrl = eventData.eventSpeakerPhotoUrl;
+    event.ticketPrice = eventData.ticketPrice;
+    event.description = eventData.description;
 
     await event.save();
     res.status(200).json({ message: "Event updated successfully" });
