@@ -1,5 +1,4 @@
 const EventDescription = ({ register, errors }) => {
-  console.log(errors);
   return (
     <div className="flex  pt-4 justify-center">
       <div className="flex flex-col p-4 w-full md:w-1/2">

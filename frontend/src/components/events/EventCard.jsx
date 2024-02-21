@@ -1,12 +1,17 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import EventImage from "../../assets/images/Advitya.png";
+import { useRecoilValue } from "recoil";
+import { isUserSelector } from "../../store/selectors/isUserSelector";
 const EventCard = ({ id }) => {
+  const isUser = useRecoilValue(isUserSelector);
   const navigate = useNavigate();
-
+  function handleOnClickEvent() {
+    return isUser ? navigate(`/user/event/${id}`) : navigate("/user/login");
+  }
   return (
 
     <div
-      onClick={() => navigate(`/user/event/${id}`)}
+      onClick={handleOnClickEvent}
       className=" flex flex-col items-fill px-2 border-4 border-bluePurple rounded-xl  transition-all ease-in-out	 duration-500 "
     >
 

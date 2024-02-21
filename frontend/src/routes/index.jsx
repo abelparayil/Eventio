@@ -12,23 +12,19 @@ import UserProtectedPages from "./UserProtectedPages.jsx";
 import Verifications from "../pages/users/Verifications.jsx";
 import Layout from "../components/layout/Layout.jsx";
 import Dashboard from "../pages/admin/Dashboard.jsx";
-import Messages from "../components/ui/Messages.jsx";
-import Profile from "../components/ui/Profile.jsx";
+import UserDashboard from "../pages/users/Dashboard.jsx";
+import Messages from "../components/ui/admin/Messages.jsx";
+import Profile from "../components/ui/admin/Profile.jsx";
+import UserProfile from "../components/ui/user/Profile.jsx";
 import Events from "../components/events/AdminEvents.jsx";
 import CreateEvent from "../pages/admin/CreateEvent.jsx";
 import AdminProtectedPages from "./AdminProtectedPages.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
-import { isUserSelector } from "../store/selectors/isUserSelector.js";
-import { isAdminSelector } from "../store/selectors/isAdminSelector.js";
-import { useRecoilValue } from "recoil";
 import EventDetails from "../pages/users/EventDetails.jsx";
 
 const Routes = ({ children }) => {
   // const emailVerify = useRecoilValue(userAtom);
-  const isUser = useRecoilValue(isUserSelector);
-  const isAdmin = useRecoilValue(isAdminSelector);
-  console.log("IsUser", isUser);
-  console.log("IsAdmin", isAdmin);
+
   const routesForAdmin = [
     {
       path: "/",
@@ -72,6 +68,16 @@ const Routes = ({ children }) => {
           path: "/user/event/:id",
           element: <EventDetails />,
         },
+        {
+          path: "/user/dashboard",
+          element: <UserDashboard />,
+          children: [
+            {
+              path: "profile",
+              element: <UserProfile />,
+            },
+          ],
+        },
       ],
     },
   ];
@@ -81,7 +87,7 @@ const Routes = ({ children }) => {
       children: [
         {
           path: "/",
-          element: <LandingPage isLogin={false} />,
+          element: <LandingPage />,
         },
         {
           path: "/user/signup/verification",

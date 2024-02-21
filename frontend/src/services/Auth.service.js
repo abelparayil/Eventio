@@ -3,7 +3,6 @@ import axios from "axios";
 const URL = "https://localhost:5000";
 
 const signup = (username, email, password) => {
-  console.log(email, password);
   return axios
     .post(URL + "/signup", {
       username,
@@ -14,7 +13,6 @@ const signup = (username, email, password) => {
 };
 
 const login = (email, password) => {
-  console.log(email, password);
   return axios
     .post(URL + "/login", {
       email,

@@ -8,7 +8,6 @@ export const isAdminSelector = selector({
   get: async ({ get }) => {
     try {
       const token = get(authAtom).token;
-      console.log(token);
       const res = await axios.get(URL + "admin/isAdmin", {
         headers: {
           Authorization: `Bearer ${token}`,
