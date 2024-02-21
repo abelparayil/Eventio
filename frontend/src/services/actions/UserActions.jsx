@@ -1,21 +1,33 @@
 import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { authAtom } from "../../store/atoms/authatom";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const useUserActions = () => {
   const URL = "http://localhost:9000";
   const setAuth = useSetRecoilState(authAtom);
-
+  const navigate = useNavigate();
   const signup = async (name, email, password) => {
-    const data = await axios.post(URL + "/user/signup", {
-      name,
-      email,
-      password,
-    });
-
+    try {
+      const res = await axios.post(URL + "/user/signup", {
+        name,
+        email,
+        password,
+      });
+      if (res.status == 201) {
+        toast.success(res.data.message);
+        navigate("/user/login");
+      }
+      return res;
+    } catch (error) {
+      if (error.response.status === 401) {
+        setAuth((prev) => ({ ...prev, token: null }));
+      }
+      toast.error(error.response.data.message);
+    }
     //check whether the email exists or not , if its
     //not exists then
-    return data;
   };
   const checkEmail = async (email) => {
     const res = await axios.post(URL + "/user/signup/checkemail", { email });
@@ -28,13 +40,16 @@ export const useUserActions = () => {
   };
 
   const login = async (email, password) => {
-    const res = await axios.post(URL + "/user/login", { email, password });
-    // console.log(res.data);
-    if (res.status === 200) {
-      localStorage.setItem("user", res.data.token);
-      setAuth((prev) => ({ ...prev, token: res.data.token }));
+    try {
+      const res = await axios.post(URL + "/user/login", { email, password });
+      if (res.status === 200) {
+        localStorage.setItem("user", res.data.token);
+        setAuth((prev) => ({ ...prev, token: res.data.token }));
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
-    return res;
   };
 
   return { signup, login, checkEmail, checkOTP };

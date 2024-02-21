@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Button from "../../components/common/Button";
-import LoginSignupButton from "../../components/common/LoginSignupButton";
+
 import EventCreator from "../../components/events/EventCreator";
 import EventDescription from "../../components/events/EventDescription";
 import { useAdminActions } from "../../services/actions/AdminActions";
@@ -14,15 +14,26 @@ const CreateEvent = () => {
   } = useForm();
   const adminActions = useAdminActions();
   const navigate = useNavigate();
+
   function handleCreateEventSubmit(data) {
     console.log(data);
-    const res = adminActions.createEvent(data);
+    const imageRemovedData = Object.keys(data)
+      .filter((key) => key != "eventImage")
+      .reduce((obj, key) => {
+        obj[key] = data[key];
+        return obj;
+      }, {});
+    console.log(imageRemovedData);
+    const formdata = new FormData();
+    formdata.append("image", data.eventImage[0]);
+    formdata.append("formdata", data);
+
+    const res = adminActions.createEvent(formdata);
     return res;
   }
 
   return (
     <div className="h-full bg-mainBg tracking-wider">
-      <LoginSignupButton isLogin={true} />
       <Button
         styleclass={"bg-bluePurple rounded-full text-white m-4"}
         name={

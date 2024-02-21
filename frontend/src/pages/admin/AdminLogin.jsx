@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
 import Adminloginimage from "../../assets/images/Adminloginimage.png";
+import { toast } from "react-toastify";
 import { useAdminActions } from "../../services/actions/AdminActions";
 
 const AdminLogin = () => {
   const { register, handleSubmit } = useForm();
   const adminActions = useAdminActions();
 
-  function onSubmit({ email, password }) {
-    const data = adminActions.login(email, password);
-    return data;
+  async function onSubmit({ email, password }) {
+    const res = await adminActions.login(email, password);
+    return res;
   }
 
   return (
@@ -19,7 +20,9 @@ const AdminLogin = () => {
             <div className="text-xl font-semibold mb-8 text-black text-center">
               Eventio
             </div>
-            <div className=" text-3xl font-semibold mb-16 text-black text-center">Admin Login</div>
+            <div className=" text-3xl font-semibold mb-16 text-black text-center">
+              Admin Login
+            </div>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-center">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
                 <button
@@ -58,19 +61,20 @@ const AdminLogin = () => {
             </div>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-center"></div>
             <div>
-              <form 
-              onSubmit={handleSubmit(onSubmit)}
-              className="space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
                   <label
-                      htmlFor="usernameoremail"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email
+                    htmlFor="usernameoremail"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email
                   </label>
                   <input
                     {...register("email", {
-                      required: { value: true, message: "Email should be Valid" },
+                      required: {
+                        value: true,
+                        message: "Email should be Valid",
+                      },
                     })}
                     className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
                     type="email"
@@ -79,19 +83,19 @@ const AdminLogin = () => {
                 </div>
                 <div>
                   <div className="flex justify-between">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-medium "
-                      >
-                        Password
-                      </label>
-                      <label
-                        htmlFor="password"
-                        className="order-last block text-sm font-medium text-grey"
-                      >
-                        Forgot your password?
-                      </label>
-                    </div>
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium "
+                    >
+                      Password
+                    </label>
+                    <label
+                      htmlFor="password"
+                      className="order-last block text-sm font-medium text-grey"
+                    >
+                      Forgot your password?
+                    </label>
+                  </div>
                   <input
                     {...register("password", { required: true })}
                     className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
@@ -99,19 +103,17 @@ const AdminLogin = () => {
                     type="password"
                   />
                 </div>
-                <button 
+                <button
                   type="submit"
                   className="w-full bg-bluePurple text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
                 >
-                  Sign In 
+                  Sign In
                 </button>
               </form>
             </div>
           </div>
         </div>
 
-
-        
         <div className="hidden lg:flex items-center justify-center flex-1 text-black ">
           <img
             src={Adminloginimage}

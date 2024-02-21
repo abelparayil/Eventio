@@ -12,9 +12,8 @@ const UserLogin = () => {
   const navigate = useNavigate();
   const userActions = useUserActions();
   async function handleLoginOnSubmit({ email, password }) {
-    console.log(email, password);
     const res = await userActions.login(email, password);
-    console.log(res);
+
     if (res.status === 200) {
       navigate("/user/home");
     }
@@ -149,8 +148,6 @@ const UserLogin = () => {
           </div>
         </div>
 
-
-        
         <div className="hidden lg:flex items-center justify-center flex-1 text-black ">
           <img
             src={loginImage}

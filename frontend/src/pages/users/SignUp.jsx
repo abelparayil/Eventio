@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/common/Button";
 import { useUserActions } from "../../services/actions/UserActions";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import signupImage from "../../assets/images/signup.png";
 // import { useSetRecoilState } from "recoil";
@@ -22,6 +20,7 @@ const SignUp = () => {
     // const checkEmail = await userActions.checkEmail({ name, email, password });
     const resSubmit = await userActions.signup(name, email, password);
     return resSubmit;
+
     // if (checkEmail) {
     //   navigate("/user/login");
     // } else {
@@ -34,7 +33,7 @@ const SignUp = () => {
     <div>
       <div className="flex h-screen bg-ghostWhite">
         <div className="hidden lg:flex items-center justify-center flex-1 text-black ">
-        <img
+          <img
             src={signupImage}
             alt="presentation"
             className=" h-full w-screen object-none blur-[2px]"
@@ -50,21 +49,18 @@ const SignUp = () => {
               type="submit"
               onClick={() => navigate("/user/login")}
               name={"Sign In"}
-              className="w-32 bg-opacity-75 bg-mercury text-white p-2 rounded-md hover:bg-gray-800  focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">
+              className="w-32 bg-opacity-75 bg-mercury text-white p-2 rounded-md hover:bg-gray-800  focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+            >
               Sign In
             </button>
           </div>
         </div>
 
-
-
-
-
-
-
         <div className="w-full bg-gray-100 lg:w-7/12 flex items-center justify-center">
           <div className="max-w-md w-full p-6">
-            <div className="text-3xl font-semibold mb-6 text-black text-center">Sign Up To Eventio</div>
+            <div className="text-3xl font-semibold mb-6 text-black text-center">
+              Sign Up To Eventio
+            </div>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-center">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
                 <button
@@ -103,107 +99,113 @@ const SignUp = () => {
             </div>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-center"></div>
             <div>
-              <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>
-
-
+              <form
+                className="flex flex-col space-y-4"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Name
-                    </label>
-                      <input
-                        {...register("name", {
-                          required: true,
-                          minLength: { value: 5, message: "minimum character should be 5" },
-                        })}
-                        className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                        type="text"
-                        placeholder="Your Name"
-                      />
-                      {errors.name ? <span>{errors.name.message}</span> : null}
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Name
+                  </label>
+                  <input
+                    {...register("name", {
+                      required: true,
+                      minLength: {
+                        value: 5,
+                        message: "minimum character should be 5",
+                      },
+                    })}
+                    className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                    type="text"
+                    placeholder="Your Name"
+                  />
+                  {errors.name ? <span>{errors.name.message}</span> : null}
                 </div>
 
-                
                 <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email
-                    </label>
-                    <input
-                      {...register("email", { required: true })}
-                      className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                      type="email"
-                      placeholder="Enter Your Email"
-                    />
-                    {errors.email ? <span>{errors.email.message}</span> : null}
-                </div>
-                  
-
-                <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Password
-                    </label>
-                    <input
-                      {...register("password", {
-                        required: true,
-                        maxLength: {
-                          value: 10,
-                          message: "Password Length should be less than 10 characters",
-                        },
-                        minLength: {
-                          value: 5,
-                          message: "Your password must have atleast 6 characters",
-                        },
-                      })}
-                      className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                    />
-                    {errors.password ? <span>{errors.password.message}</span> : " "}
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Email
+                  </label>
+                  <input
+                    {...register("email", { required: true })}
+                    className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                    type="email"
+                    placeholder="Enter Your Email"
+                  />
+                  {errors.email ? <span>{errors.email.message}</span> : null}
                 </div>
 
-
                 <div>
-                    <label
-                      htmlFor="confirmpassword"
-                      className="block text-sm font-medium text-gray-700">
-                      Confirm Password
-                    </label>
-                    <input
-                      {...register("confirmpassword", {
-                        required: true,
-                        validate: (val) => {
-                          if (watch("password") != val) {
-                            return "The password and confirmation password do not match";
-                          }
-                        },
-                      })}
-                      className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
-                      type="password"
-                      name="confirmpassword"
-                      placeholder="Confirm Password"
-                    />
-                    <div>
-                      {errors.confirmpassword ? (
-                        <span>{errors.confirmpassword.message}</span>
-                      ) : (
-                        " "
-                      )}
-                    </div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password
+                  </label>
+                  <input
+                    {...register("password", {
+                      required: true,
+                      maxLength: {
+                        value: 10,
+                        message:
+                          "Password Length should be less than 10 characters",
+                      },
+                      minLength: {
+                        value: 5,
+                        message: "Your password must have atleast 6 characters",
+                      },
+                    })}
+                    className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                  />
+                  {errors.password ? (
+                    <span>{errors.password.message}</span>
+                  ) : (
+                    " "
+                  )}
                 </div>
 
+                <div>
+                  <label
+                    htmlFor="confirmpassword"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    {...register("confirmpassword", {
+                      required: true,
+                      validate: (val) => {
+                        if (watch("password") != val) {
+                          return "The password and confirmation password do not match";
+                        }
+                      },
+                    })}
+                    className="mt-1 p-2 w-full rounded-md placeholder:text-sm focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
+                    type="password"
+                    name="confirmpassword"
+                    placeholder="Confirm Password"
+                  />
+                  <div>
+                    {errors.confirmpassword ? (
+                      <span>{errors.confirmpassword.message}</span>
+                    ) : (
+                      " "
+                    )}
+                  </div>
+                </div>
 
-                <button 
-                className="w-full bg-bluePurple text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
-                type="submit"
+                <button
+                  className="w-full bg-bluePurple text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300"
+                  type="submit"
                 >
                   Submit
                 </button>
@@ -216,7 +218,6 @@ const SignUp = () => {
                     <b> Sign In</b>
                   </label>
                 </div>
-
               </form>
             </div>
           </div>
