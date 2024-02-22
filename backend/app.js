@@ -12,6 +12,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static("uploads"));
 
 app.use("/user", userRouter);
 app.use("/event", eventRouter);

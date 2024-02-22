@@ -41,16 +41,18 @@ export const getAllEvents = async (req, res, next) => {
 
 export const addEvent = async (req, res, next) => {
   console.log("reached");
+
   try {
     const {
       eventTitle,
       radio,
       venue,
       time,
-      startDate,
+      startdate,
       ticketprice,
       description,
-    } = req.body;
+    } = JSON.parse(req.body.formdata);
+    console.log(eventTitle);
     const image = req.file.filename;
     const eventData = {
       eventTitle,
@@ -62,7 +64,7 @@ export const addEvent = async (req, res, next) => {
           imgType: "image",
         },
       ],
-      eventDateAndTime: new Date(startDate + " " + time),
+      eventDateAndTime: new Date(startdate + " " + time),
       eventVenue: venue,
       ticketPrice: ticketprice,
       description,
