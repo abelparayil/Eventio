@@ -12,6 +12,7 @@ const SignUp = () => {
     watch,
     formState: { errors },
   } = useForm();
+  console.log(register);
   const userActions = useUserActions();
   const navigate = useNavigate();
   // const setUserData = useSetRecoilState(userDataAtom);

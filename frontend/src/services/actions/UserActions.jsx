@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { authAtom } from "../../store/atoms/authatom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export const useUserActions = () => {
   const URL = "http://localhost:9000";
-  const setAuth = useSetRecoilState(authAtom);
+  const [auth, setAuth] = useRecoilState(authAtom);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${auth.token}`;
   const navigate = useNavigate();
   const signup = async (name, email, password) => {
     try {

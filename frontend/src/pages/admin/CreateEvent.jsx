@@ -23,10 +23,10 @@ const CreateEvent = () => {
         obj[key] = data[key];
         return obj;
       }, {});
-    console.log(imageRemovedData);
+
     const formdata = new FormData();
     formdata.append("image", data.eventImage[0]);
-    formdata.append("formdata", data);
+    formdata.append("formdata", JSON.stringify(imageRemovedData));
 
     const res = adminActions.createEvent(formdata);
     return res;
