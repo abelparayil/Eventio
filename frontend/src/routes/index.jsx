@@ -21,6 +21,8 @@ import CreateEvent from "../pages/admin/CreateEvent.jsx";
 import AdminProtectedPages from "./AdminProtectedPages.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import EventDetails from "../pages/users/EventDetails.jsx";
+import RegisteredEvents from "../pages/users/RegisteredEvents.jsx";
+import StudentList from "../pages/admin/StudentList.jsx";
 
 const Routes = ({ children }) => {
   // const emailVerify = useRecoilValue(userAtom);
@@ -52,6 +54,10 @@ const Routes = ({ children }) => {
           path: "admin/dashboard/create-event",
           element: <CreateEvent />,
         },
+        {
+          path: "admin/event/:id/students",
+          element: <StudentList />,
+        },
       ],
     },
   ];
@@ -77,6 +83,10 @@ const Routes = ({ children }) => {
               element: <UserProfile />,
             },
           ],
+        },
+        {
+          path: "/user/registered-events",
+          element: <RegisteredEvents />,
         },
       ],
     },
