@@ -1,4 +1,12 @@
 const EventCreator = ({ register, errors }) => {
+  const Currentdate = new Date();
+  const currentdate = Currentdate.getDate();
+  const currentMonth =
+    Currentdate.getMonth() + 1 > 10
+      ? Currentdate.getMonth() + 1
+      : `0${Currentdate.getMonth() + 1}`;
+  const currentYear = Currentdate.getFullYear();
+  const checkdate = `${currentYear}-${currentMonth}-${currentdate}`;
   return (
     <div className="flex h-auto  pt-4 justify-center ">
       <div className="flex flex-col w-full p-4 md:w-1/2 gap-4">
@@ -138,6 +146,7 @@ const EventCreator = ({ register, errors }) => {
                   value: true,
                   message: "Starting Date Can't be Empty",
                 },
+                validate: (value) => value > checkdate,
               })}
               className="p-1 rounded"
               type="date"

@@ -26,13 +26,13 @@ const EventCard = ({ id, title, date, venue, image }) => {
   return (
     <div
       onClick={handleOnClickEvent}
-      className=" flex flex-col items-fill px-2 border-4 border-bluePurple rounded-xl  transition-all ease-in-out	 duration-500 "
+      className=" flex flex-col items-fill bg-white px-2 border-4 border-bluePurple rounded-xl  transition-all ease-in-out	 duration-500 "
     >
       <img
-        className="mt-3 h-24"
+        // className="mt-3 h-24"
         src={!errorImage ? `${URL}/${image.imgName}` : NoImage}
       />
-      <p className="font-sarala text-center mt-8 mb-4 text-sm ">{title}</p>
+      <p className="font-sarala text-center mt-8 mb-4 text-xl ">{title}</p>
       <p className="font-sarala text-center text-bluePurple mt-2">
         {date.date}-{date.monthName}-{date.year}
       </p>

@@ -12,7 +12,7 @@ const UpcomingEvents = () => {
           Upcoming <span className=" text-bluePurple">Events</span>
         </h1>
       </div>
-      <div className=" p-16 flex gap-4 flex-wrap justify-between ">
+      <div className=" p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
         {upcomingEvents.events.map((event) => (
           <EventCard
             key={event._id}

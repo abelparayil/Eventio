@@ -23,6 +23,7 @@ import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import EventDetails from "../pages/users/EventDetails.jsx";
 import RegisteredEvents from "../pages/users/RegisteredEvents.jsx";
 import StudentList from "../pages/admin/StudentList.jsx";
+import Scanner from "../components/ui/admin/AdminScanner.jsx";
 
 const Routes = ({ children }) => {
   // const emailVerify = useRecoilValue(userAtom);
@@ -47,6 +48,10 @@ const Routes = ({ children }) => {
             {
               path: "events",
               element: <Events />,
+            },
+            {
+              path: "scan",
+              element: <Scanner />,
             },
           ],
         },

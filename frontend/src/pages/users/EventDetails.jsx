@@ -19,11 +19,14 @@ const EventDetails = () => {
     userActions
       .getEventDetails(id)
       .then((res) => {
+        console.log(res);
         setEventDetails(res);
-
-        userActions.getImage(res.eventImages.imgName).then((res) => {
-          setErrorImage(res);
-        });
+        userActions
+          .getImage(res.eventImages[0].imgName)
+          .then((res) => {
+            setErrorImage(res);
+          })
+          .catch((err) => toast.error(err.response.message));
       })
       .catch((err) => {
         toast.error(err.response.message);
@@ -51,7 +54,7 @@ const EventDetails = () => {
             alt=""
             className="h-full w-full "
           />
-          <h2 className=" absolute top-1/2 text-white left-1/4 text-3xl">
+          <h2 className=" absolute top-1/2 text-magentaRed left-1/2 text-3xl -translate-x-1/2 -translate-y-1/2 ">
             Your vision, our expertise – the perfect blend for unforgettable
             moments!
           </h2>
