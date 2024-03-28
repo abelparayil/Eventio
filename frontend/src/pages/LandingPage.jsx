@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const LandingPage = ({ isLogin }) => {
   const navigate = useNavigate();
   return (
-    <div className="h-full bg-ghostWhite">
+    <div className="h-full bg-mainBg">
       <IntroductoryText />
       <Banner />
       <UpcomingEvents />

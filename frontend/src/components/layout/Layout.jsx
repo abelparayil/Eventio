@@ -4,7 +4,7 @@ import Header from "../ui/Header";
 
 const Layout = () => {
   return (
-    <div className="relative ">
+    <div className="relative">
       <Header />
       <div className="h-full">
         <Outlet />
