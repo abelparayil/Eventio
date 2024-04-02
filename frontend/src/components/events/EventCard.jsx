@@ -4,6 +4,8 @@ import { isUserSelector } from "../../store/selectors/isUserSelector";
 import NoImage from "../../assets/images/noimage.jpeg";
 import { useEffect, useState } from "react";
 import useCommonActions from "../../services/actions/CommonActions";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const URL = "http://localhost:9000";
 const EventCard = ({ id, title, date, venue, image }) => {
@@ -13,6 +15,7 @@ const EventCard = ({ id, title, date, venue, image }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    AOS.init();
     userAction
       .getImage(image.imgName)
       .then((res) => setErrorImage(res))
@@ -26,7 +29,8 @@ const EventCard = ({ id, title, date, venue, image }) => {
   return (
     <div
       onClick={handleOnClickEvent}
-      className=" flex flex-col items-fill bg-white px-2 border-4 border-bluePurple rounded-xl  transition-all ease-in-out	 duration-500 "
+      className=" flex flex-col items-fill bg-white px-2 border-4 border-bluePurple rounded-xl overflow-hidden hover:scale-105 transition duration-500 hover:ease-in-out"
+      data-aos="fade-right"
     >
       <img
         // className="mt-3 h-24"

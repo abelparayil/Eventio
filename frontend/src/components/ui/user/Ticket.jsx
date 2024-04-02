@@ -18,7 +18,7 @@ const Ticket = ({ setIsOpen, modal }) => {
       onClick={() => setIsOpen(true)}
       className={
         !modal
-          ? `border-4 border-bluePurple w-max p-5 lg:p-8 rounded-md bg-white`
+          ? `border-4 border-bluePurple w-max p-5 lg:p-8 rounded-md bg-white transition duration-300 hover:scale-105`
           : `border-4 border-bluePurple w-max p-3 lg:p-9 rounded-md bg-white`
       }
     >

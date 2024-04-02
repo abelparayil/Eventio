@@ -13,7 +13,7 @@ const RegisteredEvents = () => {
           WELCOME <span className="text-violetBlue">{USER}</span>!
         </h1>
       </div>
-      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 my-4 justify-items-center ">
+      <div className=" grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 my-4 justify-items-center ">
         <Ticket setIsOpen={setIsOpen} modal={false} />
         <Ticket setIsOpen={setIsOpen} modal={false} />
         <Ticket setIsOpen={setIsOpen} modal={false} />
