@@ -4,7 +4,6 @@ import { upcomingEventAtom } from "../../store/atoms/eventsAtom";
 
 const UpcomingEvents = () => {
   const upcomingEvents = useRecoilValue(upcomingEventAtom);
-
   return (
     <div className="h-full">
       <div className="p-4 px-8 sp">
@@ -12,7 +11,7 @@ const UpcomingEvents = () => {
           Upcoming <span className=" text-bluePurple">Events</span>
         </h1>
       </div>
-      <div className=" p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
+      <div className=" p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4  ">
         {upcomingEvents.events.map((event) => (
           <EventCard
             key={event._id}

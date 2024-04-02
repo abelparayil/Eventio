@@ -29,9 +29,9 @@ const Modal = ({ isOpen, children, onClose }) => {
 
   return createPortal(
     <>
-      <div style={OVERLAY_STYLES} />
+      <div style={OVERLAY_STYLES} onClick={() => onClose()} />
       <div
-        className="rounded border-4 border-bluePurple p-6 md:p-12"
+        className="rounded border-4 border-bluePurple p-6 md:p-12 shadow-lg "
         style={MODAL_STYLES}
       >
         <button onClick={() => onClose()}>
