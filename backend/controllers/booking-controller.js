@@ -29,6 +29,26 @@ export const addBooking = async (req, res, next) => {
   }
 };
 
+export const getBookingId = async (req, res, next) => {
+  try {
+    const userId = req.userId.id;
+    const eventId = req.params.eventId;
+
+    const booking = await Booking.findOne({
+      user: userId,
+      event: eventId,
+    });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    res.status(200).json({ booking });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const deleteBooking = async (req, res, next) => {
   try {
     const userId = req.userId.id;
