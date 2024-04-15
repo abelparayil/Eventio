@@ -101,7 +101,9 @@ export const login = async (req, res, next) => {
     { expiresIn: "1h" }
   );
 
-  return res.status(200).json({ message: "login successful", token });
+  return res
+    .status(200)
+    .json({ message: "login successful", token, name: existingUser.name });
 };
 
 export const resetPassword = async (req, res, next) => {
