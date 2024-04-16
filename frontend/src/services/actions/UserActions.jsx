@@ -23,7 +23,7 @@ export const useUserActions = () => {
       return res;
     } catch (error) {
       if (error.response.status === 401) {
-        setAuth((prev) => ({ ...prev, token: null }));
+        setAuth((prev) => ({ ...prev, token: null, name: "Unknown" }));
       }
       toast.error(error.response.data.message);
     }
@@ -45,7 +45,11 @@ export const useUserActions = () => {
       const res = await axios.post(URL + "/user/login", { email, password });
       if (res.status === 200) {
         localStorage.setItem("user", res.data.token);
-        setAuth((prev) => ({ ...prev, token: res.data.token }));
+        setAuth((prev) => ({
+          ...prev,
+          token: res.data.token,
+          name: res.data.name,
+        }));
         toast.success(res.data.message);
       }
     } catch (error) {

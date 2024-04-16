@@ -30,7 +30,7 @@ const LoginSignupButton = () => {
   }, [ref]);
   return (
     <div>
-      {!token ? (
+      {!token.token ? (
         <>
           <Button
             styleclass={"bg-mercury rounded-l-lg"}
