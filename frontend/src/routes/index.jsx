@@ -102,7 +102,7 @@ const Routes = ({ children }) => {
       children: [
         {
           path: "/",
-          element: <LandingPage />,
+          element: <LandingPage isLogin={false} />,
         },
         {
           path: "/user/signup/verification",
