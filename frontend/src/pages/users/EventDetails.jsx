@@ -7,14 +7,17 @@ import useCommonActions from "../../services/actions/CommonActions";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { loadScript } from "../../util/razorpay";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../../store/atoms/authatom";
 
 const URL = "http://localhost:9000";
 
 const EventDetails = () => {
   const [errorImage, setErrorImage] = useState(false);
   const [eventdetails, setEventDetails] = useState({});
+  const auth = useRecoilValue(authAtom);
 
-  const user = "VINAY DEV";
+  const user = auth.name.toUpperCase();
   const { id } = useParams();
   const userActions = useCommonActions();
   async function displayRazorPay(id) {
