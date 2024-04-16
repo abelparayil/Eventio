@@ -30,7 +30,7 @@ const EventDetails = () => {
       return;
     }
 
-    const result = await axios.post("/payment/orders", { id: id });
+    const result = await axios.post(URL + "/payments/pay", { id: id });
 
     if (!result) {
       alert("Server error. Are you online?");
@@ -40,7 +40,7 @@ const EventDetails = () => {
     const { amount, id: order_id, currency } = result.data;
 
     const options = {
-      key: "<YOUR RAZORPAY KEY>", // Enter the Key ID generated from the Dashboard
+      key: "rzp_test_soisxzq8NqMF20", // Enter the Key ID generated from the Dashboard
       amount: amount.toString(),
       currency: currency,
       name: "Eventio Corp.",
@@ -55,7 +55,7 @@ const EventDetails = () => {
           razorpaySignature: response.razorpay_signature,
         };
 
-        const result = await axios.post("/payment/success", data);
+        const result = await axios.post(URL + "/payments/paymentCapture", data);
 
         alert(result.data.msg);
       },

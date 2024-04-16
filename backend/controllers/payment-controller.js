@@ -9,7 +9,7 @@ export const createPayment = async (req, res) => {
   });
 
   const options = {
-    amount: req.body.amount * 100,
+    amount: 100 * 100,
     currency: "INR",
   };
 
@@ -21,6 +21,7 @@ export const createPayment = async (req, res) => {
       amount: response.amount,
     });
   } catch (err) {
+    console.log(err);
     res.status(400).send("Not able to create order. Please try again!");
   }
 };
