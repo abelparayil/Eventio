@@ -1,6 +1,7 @@
 import Razorpay from "razorpay";
 import Payments from "../models/Payments.js";
-import crypto from "crypto";
+import { createHmac } from "node:crypto";
+import Event from "../models/Event.js";
 
 export const createPayment = async (req, res) => {
   const instance = new Razorpay({
@@ -8,8 +9,15 @@ export const createPayment = async (req, res) => {
     key_secret: process.env.RAZORPAY_KEY_ID,
   });
 
+  const eventId = req.body.id;
+
+  const event = await Event.findById(eventId);
+  if (!event) {
+    return res.status(404).json({ message: "Event not found" });
+  }
+
   const options = {
-    amount: 100 * 100,
+    amount: event.ticketPrice * 100,
     currency: "INR",
   };
 
@@ -35,11 +43,11 @@ export const capturePayment = async (req, res) => {
       razorpaySignature,
     } = req.body;
 
-    const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
-    shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
-    const digest = shasum.digest("hex");
+    const hash = createHmac("sha256", process.env.RAZORPAY_SECRET)
+      .update(`${orderCreationId}|${razorpayPaymentId}`)
+      .digest("hex");
 
-    if (digest !== razorpaySignature) {
+    if (hash !== razorpaySignature) {
       return res.status(400).json({ message: "Transaction not legit!" });
     }
 
