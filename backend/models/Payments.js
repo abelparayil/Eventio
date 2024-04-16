@@ -8,7 +8,12 @@ const paymentSchema = new Schema({
     paymentId: String,
     signature: String,
   },
+  amount: Number,
   success: Boolean,
+  userPaid: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 export default mongoose.model("Payment", paymentSchema);

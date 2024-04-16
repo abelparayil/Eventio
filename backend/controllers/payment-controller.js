@@ -2,6 +2,7 @@ import Razorpay from "razorpay";
 import Payments from "../models/Payments.js";
 import { createHmac } from "node:crypto";
 import Event from "../models/Event.js";
+import Booking from "../models/Booking.js";
 
 export const createPayment = async (req, res) => {
   const instance = new Razorpay({
@@ -9,7 +10,7 @@ export const createPayment = async (req, res) => {
     key_secret: process.env.RAZORPAY_KEY_ID,
   });
 
-  const eventId = req.body.id;
+  const eventId = req.body.eventId;
 
   const event = await Event.findById(eventId);
   if (!event) {
@@ -34,22 +35,32 @@ export const createPayment = async (req, res) => {
   }
 };
 
-export const capturePayment = async (req, res) => {
+export const capturePayment = async (req, res, next) => {
   try {
     const {
-      orderCreationId,
+      amount,
       razorpayPaymentId,
       razorpayOrderId,
       razorpaySignature,
+      eventId,
     } = req.body;
 
-    const hash = createHmac("sha256", process.env.RAZORPAY_SECRET)
-      .update(`${orderCreationId}|${razorpayPaymentId}`)
-      .digest("hex");
+    const userId = req.userId.id;
 
-    if (hash !== razorpaySignature) {
-      return res.status(400).json({ message: "Transaction not legit!" });
-    }
+    const booking = new Booking({
+      user: userId,
+      event: eventId,
+    });
+
+    const savedBooking = await booking.save();
+
+    await User.findByIdAndUpdate(userId, {
+      $push: { bookedEvents: savedBooking._id },
+    });
+
+    await Event.findByIdAndUpdate(eventId, {
+      $push: { bookings: savedBooking._id },
+    });
 
     const newPayment = new Payments({
       razorpayDetails: {
@@ -57,17 +68,28 @@ export const capturePayment = async (req, res) => {
         paymentId: razorpayPaymentId,
         signature: razorpaySignature,
       },
+      amount: amount,
       success: true,
+      userPaid: userId,
+    });
+    const savedPayment = await newPayment.save();
+
+    await Booking.findByIdAndUpdate(savedBooking._id, {
+      payment: savedPayment._id,
     });
 
-    await newPayment.save();
-
-    res.status(200).json({
-      message: "Payment successful",
-      orderId: razorpayOrderId,
-      paymentId: razorpayPaymentId,
-    });
+    return res
+      .status(200)
+      .json({ message: "Payment successful and bookings added", newPayment });
   } catch (err) {
     res.status(500).json({ message: "Some error occurred" });
   }
+};
+
+export const paymentResponse = async (req, res) => {
+  const payments = await Payments.find();
+  if (!payments) {
+    return res.status(404).json({ message: "No payments found" });
+  }
+  return res.status(200).json(payments);
 };
