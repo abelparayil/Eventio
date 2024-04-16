@@ -37,7 +37,7 @@ const EventDetails = () => {
       return;
     }
 
-    const { amount, id: order_id, currency } = result.data;
+    const { amount, order_id, currency } = result.data;
 
     const options = {
       key: "rzp_test_soisxzq8NqMF20", // Enter the Key ID generated from the Dashboard
@@ -45,11 +45,10 @@ const EventDetails = () => {
       currency: currency,
       name: "Eventio Corp.",
       description: "Test Transaction",
-
       order_id: order_id,
       handler: async function (response) {
         const data = {
-          orderCreationId: order_id,
+          orderCreationId: id,
           razorpayPaymentId: response.razorpay_payment_id,
           razorpayOrderId: response.razorpay_order_id,
           razorpaySignature: response.razorpay_signature,
