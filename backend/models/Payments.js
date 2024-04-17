@@ -10,6 +10,10 @@ const paymentSchema = new Schema({
   },
   amount: Number,
   success: Boolean,
+  refund: {
+    type: Boolean,
+    default: false,
+  },
   userPaid: {
     type: Schema.Types.ObjectId,
     ref: "User",
