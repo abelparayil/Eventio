@@ -50,10 +50,10 @@ const EventDetails = () => {
         handler: async function (response) {
           console.log(response);
           try {
-            const result = await axios.post(
-              URL + "/payments/paymentCapture",
-              response
-            );
+            const result = await axios.post(URL + "/payments/paymentCapture", {
+              response,
+              eventId: id,
+            });
 
             if (result.status == 200) {
               toast.success(result.data.message);
