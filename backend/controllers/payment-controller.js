@@ -48,11 +48,20 @@ export const capturePayment = async (req, res, next) => {
 
     const userId = req.userId.id;
 
+    const bookingExists = await Booking.findOne({
+      user: userId,
+      event: eventId,
+    });
+
+    if (bookingExists) {
+      return res.status(400).json({ message: "Booking already exists" });
+    }
+
     const booking = new Booking({
       user: userId,
       event: eventId,
     });
-    console.log(booking);
+
     const savedBooking = await booking.save();
 
     try {
@@ -89,6 +98,46 @@ export const capturePayment = async (req, res, next) => {
       .json({ message: "Payment successful and bookings added", newPayment });
   } catch (err) {
     res.status(500).json({ message: "Some error occurred" });
+  }
+};
+
+export const refundPayment = async (req, res) => {
+  const userId = req.body.id;
+  const eventId = req.body.eventId;
+
+  const booking = await Booking.findOne({ user: userId, event: eventId });
+
+  const payment = await Payments.findById(booking.payment);
+
+  if (!payment) {
+    return res.status(404).json({ message: "Payment not found" });
+  }
+
+  const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_SECRET,
+    key_secret: process.env.RAZORPAY_KEY_ID,
+  });
+
+  const refund = await instance.payments.refund(
+    payment.razorpayDetails.paymentId
+  );
+
+  if (refund.status === "processed") {
+    await Payments.findByIdAndUpdate(booking.payment, { success: false });
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { bookedEvents: booking._id },
+    });
+
+    await Event.findByIdAndUpdate(eventId, {
+      $pull: { bookings: booking._id },
+    });
+
+    await Booking.findByIdAndDelete(booking._id);
+
+    return res.status(200).json({ message: "Payment refunded" });
+  } else {
+    return res.status(400).json({ message: "Payment not refunded" });
   }
 };
 

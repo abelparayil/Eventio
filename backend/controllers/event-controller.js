@@ -40,8 +40,6 @@ export const getAllEvents = async (req, res, next) => {
 };
 
 export const addEvent = async (req, res, next) => {
-  console.log("reached");
-
   try {
     const {
       eventTitle,
@@ -52,7 +50,6 @@ export const addEvent = async (req, res, next) => {
       ticketprice,
       description,
     } = JSON.parse(req.body.formdata);
-    console.log(eventTitle);
     const image = req.file.filename;
     const eventData = {
       eventTitle,
