@@ -73,3 +73,19 @@ export const deleteBooking = async (req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getAllBooking = async (req, res, next) => {
+  const eventIds = [];
+  try {
+    const userId = req.userId.id;
+
+    const bookings = await Booking.find({ user: userId }).populate("event");
+    bookings.forEach((booking) => {
+      eventIds.push(booking.event._id);
+    });
+    console.log(eventIds);
+    res.status(200).json({ eventIds, userId });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
