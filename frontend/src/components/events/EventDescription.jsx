@@ -5,6 +5,9 @@ const EventDescription = ({ register, errors }) => {
         <h2 className="text-3xl text-center">Event Description</h2>
         <div className="flex flex-col gap-4 w-full">
           <label htmlFor="event-image">Event Image</label>
+          {errors.eventImage ? (
+            <span className="text-magentaRed">{errors.eventImage.message}</span>
+          ) : null}
           <input
             {...register("eventImage", {
               required: {
@@ -18,6 +21,11 @@ const EventDescription = ({ register, errors }) => {
             id="event-image"
           />
           <label htmlFor="event-description">Event Description</label>
+          {errors.description ? (
+            <span className="text-magentaRed">
+              {errors.description.message}
+            </span>
+          ) : null}
           <textarea
             {...register("description", {
               required: {

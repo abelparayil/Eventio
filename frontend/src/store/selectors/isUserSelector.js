@@ -8,6 +8,9 @@ export const isUserSelector = selector({
   get: async ({ get }) => {
     try {
       const token = get(authAtom).token;
+      if (!token) {
+        return false;
+      }
       const res = await axios.get(URL + "user/isUser", {
         headers: {
           Authorization: `Bearer ${token}`,

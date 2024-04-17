@@ -5,6 +5,7 @@ import EventCreator from "../../components/events/EventCreator";
 import EventDescription from "../../components/events/EventDescription";
 import { useAdminActions } from "../../services/actions/AdminActions";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateEvent = () => {
   const {
@@ -15,7 +16,7 @@ const CreateEvent = () => {
   const adminActions = useAdminActions();
   const navigate = useNavigate();
 
-  function handleCreateEventSubmit(data) {
+  async function handleCreateEventSubmit(data) {
     console.log(data);
     const imageRemovedData = Object.keys(data)
       .filter((key) => key != "eventImage")
@@ -28,7 +29,11 @@ const CreateEvent = () => {
     formdata.append("image", data.eventImage[0]);
     formdata.append("formdata", JSON.stringify(imageRemovedData));
 
-    const res = adminActions.createEvent(formdata);
+    const res = await adminActions.createEvent(formdata);
+    if (res.status == 201) {
+      toast.success(res.data.message);
+      navigate("/admin/events");
+    }
     return res;
   }
 
