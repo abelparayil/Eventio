@@ -16,7 +16,9 @@ const EventDetails = () => {
   const [errorImage, setErrorImage] = useState(false);
   const [eventdetails, setEventDetails] = useState({});
   const auth = useRecoilValue(authAtom);
+
   const navigate = useNavigate();
+
 
   const user = auth.name.toUpperCase();
   const { id } = useParams();
@@ -81,6 +83,7 @@ const EventDetails = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     }
+
   }
 
   useEffect(() => {
