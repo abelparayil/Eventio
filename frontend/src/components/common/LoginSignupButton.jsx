@@ -14,7 +14,7 @@ const LoginSignupButton = () => {
   const ref = useRef();
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    localStorage.clear();
     setToken("");
     toast.success("Succesfully Logged Out");
     navigate("/user/login");

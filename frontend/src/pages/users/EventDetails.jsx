@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import NoImage from "../../assets/images/noimage.jpeg";
@@ -17,6 +17,9 @@ const EventDetails = () => {
   const [eventdetails, setEventDetails] = useState({});
   const auth = useRecoilValue(authAtom);
 
+  const navigate = useNavigate();
+
+
   const user = auth.name.toUpperCase();
   const { id } = useParams();
   const userActions = useCommonActions();
@@ -29,51 +32,58 @@ const EventDetails = () => {
       alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
+    try {
+      const result = await axios.post(URL + "/payments/pay", { eventId: id });
 
-    const result = await axios.post("/payment/orders", { id: id });
+      if (!result) {
+        alert("Server error. Are you online?");
+        return;
+      }
 
-    if (!result) {
-      alert("Server error. Are you online?");
-      return;
+      const { amount, order_id, currency } = result.data;
+
+      const options = {
+        key: "rzp_test_soisxzq8NqMF20", // Enter the Key ID generated from the Dashboard
+        amount: amount.toString(),
+        currency: currency,
+        name: "Eventio Corp.",
+        description: "Test Transaction",
+        order_id: order_id,
+        handler: async function (response) {
+          console.log(response);
+          try {
+            const result = await axios.post(URL + "/payments/paymentCapture", {
+              response,
+              eventId: id,
+            });
+
+            if (result.status == 200) {
+              toast.success(result.data.message);
+            }
+            navigate("/user/registered-events");
+          } catch (error) {
+            toast.error(error.response.data.message);
+          }
+        },
+        prefill: {
+          name: "Eventio",
+          email: "eventio@management.com",
+          contact: "9999999999",
+        },
+        notes: {
+          address: "Eventio Corporate Office",
+        },
+        theme: {
+          color: "#61dafb",
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
 
-    const { amount, id: order_id, currency } = result.data;
-
-    const options = {
-      key: "<YOUR RAZORPAY KEY>", // Enter the Key ID generated from the Dashboard
-      amount: amount.toString(),
-      currency: currency,
-      name: "Eventio Corp.",
-      description: "Test Transaction",
-
-      order_id: order_id,
-      handler: async function (response) {
-        const data = {
-          orderCreationId: order_id,
-          razorpayPaymentId: response.razorpay_payment_id,
-          razorpayOrderId: response.razorpay_order_id,
-          razorpaySignature: response.razorpay_signature,
-        };
-
-        const result = await axios.post("/payment/success", data);
-
-        alert(result.data.msg);
-      },
-      prefill: {
-        name: "Eventio",
-        email: "eventio@management.com",
-        contact: "9999999999",
-      },
-      notes: {
-        address: "Eventio Corporate Office",
-      },
-      theme: {
-        color: "#61dafb",
-      },
-    };
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
   }
 
   useEffect(() => {

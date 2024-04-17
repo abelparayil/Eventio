@@ -6,6 +6,7 @@ import userRouter from "./routes/user-routes.js";
 import eventRouter from "./routes/event-routes.js";
 import bookingRouter from "./routes/booking-routes.js";
 import adminRouter from "./routes/admin-routes.js";
+import paymentRouter from "./routes/payment-routes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use("/user", userRouter);
 app.use("/event", eventRouter);
 app.use("/bookings", bookingRouter);
 app.use("/admin", adminRouter);
+app.use("/payments", paymentRouter);
 
 mongoose
   .connect(

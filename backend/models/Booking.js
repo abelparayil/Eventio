@@ -13,6 +13,10 @@ const bookingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  payment: {
+    type: Schema.Types.ObjectId,
+    ref: "Payment",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

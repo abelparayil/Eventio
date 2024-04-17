@@ -1,5 +1,5 @@
 import { RecoilRoot } from "recoil";
-import Routes from "./Routes";
+import Routes from "./routes";
 import { ToastContainer } from "react-toastify";
 import React from "react";
 const App = () => {
