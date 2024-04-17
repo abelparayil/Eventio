@@ -75,16 +75,26 @@ export const deleteBooking = async (req, res, next) => {
 };
 
 export const getAllBooking = async (req, res, next) => {
-  const eventIds = [];
+  const eventIdsWithRefundStatus = [];
   try {
     const userId = req.userId.id;
 
-    const bookings = await Booking.find({ user: userId }).populate("event");
+    const bookings = await Booking.find({ user: userId })
+      .populate("event")
+      .populate("payment");
     bookings.forEach((booking) => {
-      eventIds.push(booking.event._id);
+      const event = booking.event._id;
+      const refundStatus = booking.payment.refund;
+
+      const eventObject = {
+        eventId: event,
+        refundStatus: refundStatus,
+      };
+
+      eventIdsWithRefundStatus.push(eventObject);
     });
-    console.log(eventIds);
-    res.status(200).json({ eventIds, userId });
+    console.log(bookings);
+    res.status(200).json({ eventIdsWithRefundStatus, userId });
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
   }
