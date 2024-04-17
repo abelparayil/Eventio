@@ -1,6 +1,7 @@
 import Razorpay from "razorpay";
 import Payments from "../models/Payments.js";
 import { createHmac } from "node:crypto";
+import User from "../models/User.js";
 import Event from "../models/Event.js";
 import Booking from "../models/Booking.js";
 
@@ -51,16 +52,20 @@ export const capturePayment = async (req, res, next) => {
       user: userId,
       event: eventId,
     });
-
+    console.log(booking);
     const savedBooking = await booking.save();
 
-    await User.findByIdAndUpdate(userId, {
-      $push: { bookedEvents: savedBooking._id },
-    });
+    try {
+      await User.findByIdAndUpdate(userId, {
+        $push: { bookedEvents: savedBooking._id },
+      });
 
-    await Event.findByIdAndUpdate(eventId, {
-      $push: { bookings: savedBooking._id },
-    });
+      await Event.findByIdAndUpdate(eventId, {
+        $push: { bookings: savedBooking._id },
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     const newPayment = new Payments({
       razorpayDetails: {
@@ -72,6 +77,7 @@ export const capturePayment = async (req, res, next) => {
       success: true,
       userPaid: userId,
     });
+
     const savedPayment = await newPayment.save();
 
     await Booking.findByIdAndUpdate(savedBooking._id, {
