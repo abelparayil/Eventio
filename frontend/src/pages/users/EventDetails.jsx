@@ -47,14 +47,11 @@ const EventDetails = () => {
       description: "Test Transaction",
       order_id: order_id,
       handler: async function (response) {
-        const data = {
-          orderCreationId: id,
-          razorpayPaymentId: response.razorpay_payment_id,
-          razorpayOrderId: response.razorpay_order_id,
-          razorpaySignature: response.razorpay_signature,
-        };
-
-        const result = await axios.post(URL + "/payments/paymentCapture", data);
+        console.log(response);
+        const result = await axios.post(
+          URL + "/payments/paymentCapture",
+          response
+        );
 
         alert(result.data.msg);
       },
