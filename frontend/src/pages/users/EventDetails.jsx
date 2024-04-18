@@ -19,7 +19,6 @@ const EventDetails = () => {
 
   const navigate = useNavigate();
 
-
   const user = auth.name.toUpperCase();
   const { id } = useParams();
   const userActions = useCommonActions();
@@ -83,7 +82,6 @@ const EventDetails = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     }
-
   }
 
   useEffect(() => {

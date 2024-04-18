@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../common/Button";
+import { useAdminActions } from "../../../services/actions/AdminActions";
 
 const Messages = () => {
   const [messages, setMessages] = useState([
@@ -17,6 +18,12 @@ const Messages = () => {
       message: "Hello",
     },
   ]);
+  const adminAction = useAdminActions();
+  useEffect(() => {
+    async function getMessages() {
+      const res = await adminAction.getBookedDetails;
+    }
+  }, []);
   return (
     <div className="w-full h-screen">
       {messages.length == 0 ? (

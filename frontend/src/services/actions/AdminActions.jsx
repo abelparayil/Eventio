@@ -55,5 +55,10 @@ export const useAdminActions = () => {
       toast.error(error.response.data.message);
     }
   };
+
+  const getAllMessages = async () => {
+    try {
+    } catch (error) {}
+  };
   return { login, createEvent, deleteEvent, getBookedDetails };
 };
