@@ -66,5 +66,18 @@ export const useUserActions = () => {
       toast.error(error.response.data.message);
     }
   };
-  return { signup, login, checkEmail, checkOTP, getAllTickets };
+  const sendMessage = async (eventId, message) => {
+    try {
+      const res = await axios.post(URL + "/message/addMessage", {
+        eventId: eventId,
+        message: message,
+      });
+      if (res.status == 201) {
+        toast.success("Message Sent Succesfully");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  return { signup, login, checkEmail, checkOTP, getAllTickets, sendMessage };
 };

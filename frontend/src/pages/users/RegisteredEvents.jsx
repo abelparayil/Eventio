@@ -8,8 +8,6 @@ const RegisteredEvents = () => {
   const USER = "VINAY DEV";
   const [eventsId, setEventsId] = useState([]);
   const [userId, setUserId] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMessageModal, setIsMessageModal] = useState(false);
   const useAction = useUserActions();
 
   useEffect(() => {
@@ -32,8 +30,6 @@ const RegisteredEvents = () => {
         {eventsId.map((event) => {
           return (
             <Ticket
-              setIsMessageModal={setIsMessageModal}
-              setIsOpen={setIsOpen}
               refundStatus={event.refundStatus}
               eventId={event.eventId}
               userId={userId}
@@ -41,33 +37,6 @@ const RegisteredEvents = () => {
           );
         })}
       </div>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div>
-          <Ticket
-            modal={true}
-            setIsMessageModal={setIsMessageModal}
-            setIsOpen={setIsOpen}
-          />
-        </div>
-      </Modal>
-      <Modal isOpen={isMessageModal} onClose={() => setIsMessageModal(false)}>
-        <div className=" h-full w-full flex flex-col items-center justify-center">
-          <label className="block mb-2 text-sm font-medium text-gray-900">
-            Reason:
-          </label>
-          <textarea
-            id="message"
-            rows="4"
-            className="block p-2.5 w-full text-sm mb-2 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Write your thoughts here..."
-          ></textarea>
-
-          <Button
-            styleclass={"bg-bluePurple rounded w-full text-white"}
-            name={"Submit"}
-          />
-        </div>
-      </Modal>
     </div>
   );
 };
