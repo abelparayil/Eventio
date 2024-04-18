@@ -14,6 +14,10 @@ const paymentSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  cancelled: {
+    type: Boolean,
+    default: false,
+  },
   userPaid: {
     type: Schema.Types.ObjectId,
     ref: "User",
