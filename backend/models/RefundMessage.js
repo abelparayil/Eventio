@@ -1,10 +1,12 @@
-// Path: backend/models/Booking.js
-
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const bookingSchema = new Schema({
+const refundMessageSchema = new Schema({
+  message: {
+    type: String,
+    required: true,
+  },
   event: {
     type: Schema.Types.ObjectId,
     ref: "Event",
@@ -17,14 +19,6 @@ const bookingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Payment",
   },
-  ticketUsed: {
-    type: Boolean,
-    default: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
-export default mongoose.model("Booking", bookingSchema);
+export default mongoose.model("RefundMessage", refundMessageSchema);

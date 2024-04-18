@@ -4,6 +4,7 @@ import { createHmac } from "node:crypto";
 import User from "../models/User.js";
 import Event from "../models/Event.js";
 import Booking from "../models/Booking.js";
+import RefundMessage from "../models/RefundMessage.js";
 
 export const createPayment = async (req, res) => {
   const instance = new Razorpay({
@@ -107,6 +108,10 @@ export const refundPayment = async (req, res) => {
 
   const booking = await Booking.findOne({ user: userId, event: eventId });
 
+  if (!booking) {
+    return res.status(404).json({ message: "Booking not found" });
+  }
+
   const payment = await Payments.findById(booking.payment);
 
   if (!payment) {
@@ -123,7 +128,10 @@ export const refundPayment = async (req, res) => {
   );
 
   if (refund.status === "processed") {
-    await Payments.findByIdAndUpdate(booking.payment, { success: false });
+    await Payments.findByIdAndUpdate(booking.payment, {
+      success: false,
+      refund: true,
+    });
 
     await User.findByIdAndUpdate(userId, {
       $pull: { bookedEvents: booking._id },
@@ -133,12 +141,68 @@ export const refundPayment = async (req, res) => {
       $pull: { bookings: booking._id },
     });
 
+    const refundMessage = await RefundMessage.findOne({
+      payment: booking.payment,
+      event: eventId,
+      user: userId,
+    });
+
+    if (!refundMessage) {
+      return res.status(404).json({ message: "Refund message not found" });
+    }
+
+    await RefundMessage.findOneAndDelete({
+      payment: booking.payment,
+      event: eventId,
+      user: userId,
+    });
+
     await Booking.findByIdAndDelete(booking._id);
 
     return res.status(200).json({ message: "Payment refunded" });
   } else {
     return res.status(400).json({ message: "Payment not refunded" });
   }
+};
+
+export const rejectRefund = async (req, res) => {
+  const userId = req.body.userId;
+  const eventId = req.body.eventId;
+
+  const booking = await Booking.findOne({ user: userId, event: eventId });
+
+  if (!booking) {
+    return res.status(404).json({ message: "Booking not found" });
+  }
+
+  const payment = await Payments.findById(booking.payment);
+
+  if (!payment) {
+    return res.status(404).json({ message: "Payment not found" });
+  }
+
+  await Payments.findByIdAndUpdate(booking.payment, {
+    success: true,
+    refund: false,
+  });
+
+  const refundMessage = await RefundMessage.findOne({
+    payment: booking.payment,
+    event: eventId,
+    user: userId,
+  });
+
+  if (!refundMessage) {
+    return res.status(404).json({ message: "Refund message not found" });
+  }
+
+  await RefundMessage.findOneAndDelete({
+    payment: booking.payment,
+    event: eventId,
+    user: userId,
+  });
+
+  return res.status(200).json({ message: "Refund rejected" });
 };
 
 export const paymentResponse = async (req, res) => {

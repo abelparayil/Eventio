@@ -105,3 +105,21 @@ export const getAllBooking = async (req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const useTicket = async (req, res, next) => {
+  try {
+    const { userId, eventId } = req.body;
+
+    const booking = await Booking.findOne({ user: userId, event: eventId });
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+    if (booking.ticketUsed) {
+      return res.status(400).json({ message: "Ticket already used" });
+    }
+    await Booking.findByIdAndUpdate(booking._id, { ticketUsed: true });
+    res.status(200).json({ message: "Ticket used successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
