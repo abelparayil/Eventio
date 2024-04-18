@@ -85,9 +85,15 @@ export const getAllBooking = async (req, res, next) => {
     bookings.forEach((booking) => {
       const event = booking.event._id;
       const refundStatus = booking.payment.refund;
+      const eventDate = booking.event.eventDateAndTime;
+      const eventVenue = booking.event.eventVenue;
+      const eventPrice = booking.event.ticketPrice;
 
       const eventObject = {
         eventId: event,
+        eventDate: eventDate,
+        eventVenue: eventVenue,
+        eventPrice: eventPrice,
         refundStatus: refundStatus,
       };
 
