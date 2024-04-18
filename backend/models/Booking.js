@@ -17,6 +17,10 @@ const bookingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Payment",
   },
+  ticketUsed: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

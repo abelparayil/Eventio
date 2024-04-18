@@ -4,8 +4,10 @@ import {
   deleteBooking,
   getAllBooking,
   getBookingId,
+  useTicket,
 } from "../controllers/booking-controller.js";
 import { verifyUserToken } from "../middleware/user-middleware.js";
+import { verifyAdminToken } from "../middleware/event-middleware.js";
 
 const bookingRouter = express.Router();
 
@@ -13,5 +15,6 @@ bookingRouter.post("/bookEvent/:eventId", verifyUserToken, addBooking);
 bookingRouter.delete("/cancelBooking/:id", verifyUserToken, deleteBooking);
 bookingRouter.get("/getBooking/:eventId", verifyUserToken, getBookingId);
 bookingRouter.get("/getAllBooking", verifyUserToken, getAllBooking);
+bookingRouter.post("/ticketScan", verifyAdminToken, useTicket);
 
 export default bookingRouter;
