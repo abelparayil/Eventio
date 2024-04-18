@@ -5,11 +5,9 @@ import Button from "../../components/common/Button";
 
 const RegisteredEvents = () => {
   const USER = "VINAY DEV";
-  const [selectedTicket, setSelectedTicket] = useState();
-
+  const [refundStatus, setRefundStatus] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [isMessageModal, setIsMessageModal] = useState(false);
-  console.log(isOpen);
   return (
     <div className="h-screen bg-mainBg overflow-auto">
       <div className="flex justify-center">
@@ -21,7 +19,7 @@ const RegisteredEvents = () => {
         <Ticket
           setIsMessageModal={setIsMessageModal}
           setIsOpen={setIsOpen}
-          modal={false}
+          refundStatus={true}
         />
         <Ticket setIsMessageModal={setIsMessageModal} setIsOpen={setIsOpen} />
         <Ticket setIsMessageModal={setIsMessageModal} setIsOpen={setIsOpen} />
