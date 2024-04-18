@@ -2,6 +2,7 @@ import express from "express";
 import {
   addEvent,
   deleteEvent,
+  eventCompleted,
   getAllEvents,
   getEventBookings,
   getEventById,
@@ -23,5 +24,6 @@ eventRouter.get("/:id", getEventById);
 eventRouter.post("/updateEvent/:id", verifyAdminToken, updateEvent);
 eventRouter.delete("/deleteEvent/:id", verifyAdminToken, deleteEvent);
 eventRouter.get("/bookings/:id", verifyAdminToken, getEventBookings);
+eventRouter.post("/eventCompleted/:id", verifyAdminToken, eventCompleted);
 
 export default eventRouter;

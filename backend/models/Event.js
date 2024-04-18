@@ -34,6 +34,11 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  eventCompleted: {
+    type: Boolean,
+    default: false,
+  },
+
   bookings: [
     {
       type: Schema.Types.ObjectId,
