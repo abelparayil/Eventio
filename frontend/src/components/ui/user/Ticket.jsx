@@ -1,7 +1,14 @@
 import QRCode from "react-qr-code";
 import Button from "../../common/Button";
 
-const Ticket = ({ setIsOpen, modal, setIsMessageModal, refundStatus }) => {
+const Ticket = ({
+  setIsOpen,
+  modal,
+  setIsMessageModal,
+  refundStatus,
+  eventId,
+  userId,
+}) => {
   // const qrdetails = { id: "eventid", userid: "userid" };
   if (!modal) {
     modal = false;
@@ -18,7 +25,7 @@ const Ticket = ({ setIsOpen, modal, setIsMessageModal, refundStatus }) => {
     date: "22 February",
     ticketPrice: "Rs.250",
   };
-  const obj = { name: "vinay", age: 21 };
+  const obj = { eventId: eventId, userId: userId };
 
   return (
     <div
@@ -39,7 +46,7 @@ const Ticket = ({ setIsOpen, modal, setIsMessageModal, refundStatus }) => {
           <h2>Date:{ticketDetails.date}</h2>
           <h2>Time:{ticketDetails.time}</h2>
           <h2>Venue:{ticketDetails.venue}</h2>
-          <h2>Date:{ticketDetails.ticketPrice}</h2>
+          <h2>Ticket:{ticketDetails.ticketPrice}</h2>
         </div>
         <div className=" p-10">
           <QRCode size={!modal ? 150 : 256} value={JSON.stringify(obj)} />

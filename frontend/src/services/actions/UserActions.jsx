@@ -56,6 +56,15 @@ export const useUserActions = () => {
       toast.error(error.response.data.message);
     }
   };
-
-  return { signup, login, checkEmail, checkOTP };
+  const getAllTickets = async () => {
+    try {
+      const res = await axios.get(URL + "/bookings/getAllBooking");
+      if (res.status === 200) {
+        return res.data;
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  return { signup, login, checkEmail, checkOTP, getAllTickets };
 };
