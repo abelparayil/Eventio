@@ -39,13 +39,9 @@ export const createPayment = async (req, res) => {
 
 export const capturePayment = async (req, res, next) => {
   try {
-    const {
-      amount,
-      razorpayPaymentId,
-      razorpayOrderId,
-      razorpaySignature,
-      eventId,
-    } = req.body;
+    const { response, eventId } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      response;
 
     const userId = req.userId.id;
 
@@ -53,6 +49,9 @@ export const capturePayment = async (req, res, next) => {
       user: userId,
       event: eventId,
     });
+
+    const eventDetails = await Event.findById(eventId);
+    const amount = eventDetails.ticketPrice;
 
     if (bookingExists) {
       return res.status(400).json({ message: "Booking already exists" });
@@ -79,9 +78,9 @@ export const capturePayment = async (req, res, next) => {
 
     const newPayment = new Payments({
       razorpayDetails: {
-        orderId: razorpayOrderId,
-        paymentId: razorpayPaymentId,
-        signature: razorpaySignature,
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id,
+        signature: razorpay_signature,
       },
       amount: amount,
       success: true,
@@ -123,14 +122,25 @@ export const refundPayment = async (req, res) => {
     key_secret: process.env.RAZORPAY_KEY_ID,
   });
 
-  const refund = await instance.payments.refund(
-    payment.razorpayDetails.paymentId
-  );
+  const options = {
+    amount: payment.amount * 100,
+    speed: "normal",
+  };
+  let refund = null;
+  try {
+    refund = await instance.payments.refund(
+      payment.razorpayDetails.paymentId,
+      options
+    );
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: "Payment not refunded" });
+  }
 
   if (refund.status === "processed") {
     await Payments.findByIdAndUpdate(booking.payment, {
       success: false,
-      refund: true,
+      cancelled: true,
     });
 
     await User.findByIdAndUpdate(userId, {

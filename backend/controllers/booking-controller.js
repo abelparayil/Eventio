@@ -93,7 +93,6 @@ export const getAllBooking = async (req, res, next) => {
 
       eventIdsWithRefundStatus.push(eventObject);
     });
-    console.log(bookings);
     res.status(200).json({ eventIdsWithRefundStatus, userId });
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
@@ -115,5 +114,23 @@ export const useTicket = async (req, res, next) => {
     res.status(200).json({ message: "Ticket used successfully" });
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getAllCancelledBookings = async (req, res) => {
+  const userId = req.userId.id;
+
+  try {
+    //get bookings that either has ticketUsed true or cancelled true
+    const bookings = await Booking.find({
+      user: userId,
+      $or: [{ ticketUsed: true }, { cancelled: true }],
+    })
+      .populate("event")
+      .populate("payment");
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 };
