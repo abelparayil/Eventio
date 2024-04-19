@@ -25,7 +25,9 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ message: "Login successful", token });
+    res
+      .status(200)
+      .json({ message: "Login successful", token, email: existingAdmin.email });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
