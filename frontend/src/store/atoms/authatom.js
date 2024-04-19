@@ -5,5 +5,6 @@ export const authAtom = atom({
   default: {
     token: localStorage.getItem("user"),
     name: "Unknown",
+    email: "unknown@gmail.com",
   },
 });

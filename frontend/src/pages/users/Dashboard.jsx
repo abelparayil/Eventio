@@ -3,10 +3,8 @@ import UserSideBar from "../../components/ui/admin/SideBar";
 
 const Dashboard = () => {
   return (
-    <div>
-      <div>
-        <UserSideBar />
-      </div>
+    <div className="h-screen bg-mainBg flex gap-2">
+      <UserSideBar />
       <Outlet />
     </div>
   );

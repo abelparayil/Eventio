@@ -56,6 +56,28 @@ export const useUserActions = () => {
       toast.error(error.response.data.message);
     }
   };
-
-  return { signup, login, checkEmail, checkOTP };
+  const getAllTickets = async () => {
+    try {
+      const res = await axios.get(URL + "/bookings/getAllBooking");
+      if (res.status === 200) {
+        return res.data;
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  const sendMessage = async (eventId, message) => {
+    try {
+      const res = await axios.post(URL + "/message/addMessage", {
+        eventId: eventId,
+        message: message,
+      });
+      if (res.status == 201) {
+        toast.success("Message Sent Succesfully");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  return { signup, login, checkEmail, checkOTP, getAllTickets, sendMessage };
 };

@@ -9,16 +9,17 @@ import axios from "axios";
 import { loadScript } from "../../util/razorpay";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../../store/atoms/authatom";
+import Loader from "../../components/layout/Loader";
 
 const URL = "http://localhost:9000";
 
 const EventDetails = () => {
   const [errorImage, setErrorImage] = useState(false);
   const [eventdetails, setEventDetails] = useState({});
+  const [loading, setLoading] = useState(false);
   const auth = useRecoilValue(authAtom);
 
   const navigate = useNavigate();
-
 
   const user = auth.name.toUpperCase();
   const { id } = useParams();
@@ -32,14 +33,14 @@ const EventDetails = () => {
       alert("Razorpay SDK failed to load. Are you online?");
       return;
     }
+
     try {
       const result = await axios.post(URL + "/payments/pay", { eventId: id });
-
       if (!result) {
         alert("Server error. Are you online?");
         return;
       }
-
+      setLoading(false);
       const { amount, order_id, currency } = result.data;
 
       const options = {
@@ -53,7 +54,7 @@ const EventDetails = () => {
           console.log(response);
           try {
             const result = await axios.post(URL + "/payments/paymentCapture", {
-              response,
+              response: response,
               eventId: id,
             });
 
@@ -83,7 +84,6 @@ const EventDetails = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     }
-
   }
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const EventDetails = () => {
   const { year, monthName, date, hours, minutes, AmOrPM } =
     isoToNormalDate(eventDateAndTime);
 
-  if (eventdetails) {
+  if (eventdetails && !loading) {
     return (
       <div className="h-screen overflow-auto">
         <h1 className="text-2xl text-center">
@@ -174,7 +174,10 @@ const EventDetails = () => {
           <div className="flex justify-center py-7 ">
             <Button
               name={"Register Now"}
-              onClick={() => displayRazorPay(id)}
+              onClick={() => {
+                setLoading(true);
+                displayRazorPay(id);
+              }}
               styleclass={"bg-bluePurple rounded text-white px-24"}
             />
           </div>
@@ -182,7 +185,7 @@ const EventDetails = () => {
       </div>
     );
   } else {
-    return <div>HEY</div>;
+    return <Loader />;
   }
 };
 
