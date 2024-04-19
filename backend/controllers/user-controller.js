@@ -103,7 +103,12 @@ export const login = async (req, res, next) => {
 
   return res
     .status(200)
-    .json({ message: "login successful", token, name: existingUser.name });
+    .json({
+      message: "login successful",
+      token,
+      name: existingUser.name,
+      email: existingUser.email,
+    });
 };
 
 export const resetPassword = async (req, res, next) => {
