@@ -52,7 +52,7 @@ const EventDetails = () => {
           console.log(response);
           try {
             const result = await axios.post(URL + "/payments/paymentCapture", {
-              response,
+              response: response,
               eventId: id,
             });
 

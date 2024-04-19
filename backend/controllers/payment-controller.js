@@ -39,14 +39,10 @@ export const createPayment = async (req, res) => {
 
 export const capturePayment = async (req, res, next) => {
   try {
-    const {
-      amount,
-      razorpayPaymentId,
-      razorpayOrderId,
-      razorpaySignature,
-      eventId,
-    } = req.body;
-
+    const { amount, response, eventId } = req.body;
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+      response;
+    console.log(response);
     const userId = req.userId.id;
 
     const bookingExists = await Booking.findOne({
@@ -79,9 +75,9 @@ export const capturePayment = async (req, res, next) => {
 
     const newPayment = new Payments({
       razorpayDetails: {
-        orderId: razorpayOrderId,
-        paymentId: razorpayPaymentId,
-        signature: razorpaySignature,
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id,
+        signature: razorpay_signature,
       },
       amount: amount,
       success: true,
