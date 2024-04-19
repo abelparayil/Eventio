@@ -21,6 +21,7 @@ const paymentSchema = new Schema({
   amount: {
     type: Number,
   },
+
   userPaid: {
     type: Schema.Types.ObjectId,
     ref: "User",
