@@ -3,27 +3,40 @@ import Button from "../../common/Button";
 import { useAdminActions } from "../../../services/actions/AdminActions";
 
 const Messages = () => {
-  const [messages, setMessages] = useState([
-    {
-      name: "Vinay Dev S",
-      eventTitle: "AdVITya",
-      ticketPrice: 500,
-      message:
-        "Hello myflsadjjfklasdjflaksjdlfjalskdjf jfiowefjlkasdk ifjsadofjlsjdHello myflsadjjfklasdjflaksjdlfjalskdjf jfiowefjlkasdk ifjsadofjlsjdHello myflsadjjfklasdjflaksjdlfjalskdjf jfiowefjlkasdk ifjsadofjlsjdHello myflsadjjfklasdjflaksjdlfjalskdjf jfiowefjlkasdk ifjsadofjlsjd",
-    },
-    {
-      name: "Vinay Dev S",
-      eventTitle: "AdVITya",
-      ticketPrice: 500,
-      message: "Hello",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetch, setFetch] = useState(false);
   const adminAction = useAdminActions();
   useEffect(() => {
     async function getMessages() {
-      const res = await adminAction.getBookedDetails;
+      const res = await adminAction.getAllMessages();
+      if (res) setLoading(false);
+      const response = res.map((res) => {
+        return {
+          eventId: res.event._id,
+          userId: res.user._id,
+          name: res.user.name,
+          eventTitle: res.event.eventTitle,
+          ticketPrice: res.event.ticketPrice,
+          message: res.message,
+        };
+      });
+      setMessages(response);
     }
-  }, []);
+    getMessages();
+  }, [fetch]);
+  async function approveRefund(userId, eventId) {
+    await adminAction.approveRefund(userId, eventId);
+    setFetch((prev) => !prev);
+  }
+  async function rejectRefund(userId, eventId) {
+    await adminAction.rejectRefund(userId, eventId);
+    setFetch((prev) => !prev);
+  }
+  if (loading) {
+    return <span>Loading</span>;
+  }
+
   return (
     <div className="w-full h-screen">
       {messages.length == 0 ? (
@@ -32,18 +45,22 @@ const Messages = () => {
         </div>
       ) : (
         <div>
-          <div class="flex-auto block py-8 pt-6 px-9">
-            <div class="overflow-x-auto">
-              <table class="w-full my-0 align-middle text-dark border-neutral-200">
-                <thead class="align-bottom">
-                  <tr class="font-semibold text-[0.95rem] text-secondary-dark">
-                    <th class="pb-3 text-start min-w-[175px]">USERNAME</th>
-                    <th class="pb-3 text-center min-w-[100px]">EVENTNAME</th>
-                    <th class="pb-3 text-center min-w-[100px]">TICKETPRICE</th>
-                    <th class="pb-3 pr-12  text-center min-w-[175px]">
+          <div className="flex-auto block py-8 pt-6 px-9">
+            <div className="overflow-x-auto">
+              <table className="w-full my-0 align-middle text-dark border-neutral-200">
+                <thead className="align-bottom">
+                  <tr className="font-semibold text-[0.95rem] text-secondary-dark">
+                    <th className="pb-3 text-start min-w-[175px]">USERNAME</th>
+                    <th className="pb-3 text-center min-w-[100px]">
+                      EVENTNAME
+                    </th>
+                    <th className="pb-3 text-center min-w-[100px]">
+                      TICKETPRICE
+                    </th>
+                    <th className="pb-3 pr-12  text-center min-w-[175px]">
                       MESSAGE
                     </th>
-                    <th class="pb-3 pr-12 text-center min-w-[100px]">
+                    <th className="pb-3 pr-12 text-center min-w-[100px]">
                       APPROVE/REJECT
                     </th>
                   </tr>
@@ -51,13 +68,13 @@ const Messages = () => {
                 <tbody>
                   {messages.map((message) => {
                     return (
-                      <tr class="border-b border-dashed last:border-b-0 bg-ghostWhite rounded mb-2">
-                        <td class="p-3 pl-0">
-                          <div class="flex items-center">
-                            <div class="flex flex-col justify-start">
+                      <tr className="border-b border-dashed last:border-b-0 bg-ghostWhite rounded mb-2">
+                        <td className="p-3 pl-0">
+                          <div className="flex items-center">
+                            <div className="flex flex-col justify-start">
                               <a
                                 href="javascript:void(0)"
-                                class="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary"
+                                className="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary"
                               >
                                 {" "}
                                 {message.name}
@@ -65,23 +82,23 @@ const Messages = () => {
                             </div>
                           </div>
                         </td>
-                        <td class="p-3 pr-0 text-end">
-                          <span class="font-semibold text-light-inverse text-md/normal">
+                        <td className="p-3 pr-0 text-end">
+                          <span className="font-semibold text-light-inverse text-md/normal">
                             {message.eventTitle}
                           </span>
                         </td>
-                        <td class="p-3 pr-0 text-end">
-                          <span class="text-center align-baseline inline-flex px-2 py-1 mr-auto items-center font-semibold text-base/none text-success bg-success-light rounded-lg">
+                        <td className="p-3 pr-0 text-end">
+                          <span className="text-center align-baseline inline-flex px-2 py-1 mr-auto items-center font-semibold text-base/none text-success bg-success-light rounded-lg">
                             {message.ticketPrice}
                           </span>
                         </td>
-                        <td class="p-3 pr-12 text-end">
-                          <span class="text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none text-primary bg-primary-light rounded-lg">
+                        <td className="p-3 pr-12 text-end">
+                          <span className="text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none text-primary bg-primary-light rounded-lg">
                             {" "}
                             {message.message}
                           </span>
                         </td>
-                        <td class="pr-0 text-start flex justify-center items-center p-3">
+                        <td className="pr-0 text-start flex justify-center items-center p-3">
                           <Button
                             name={
                               <svg
@@ -102,6 +119,9 @@ const Messages = () => {
                             styleclass={
                               "bg-successGreen text-white rounded-full mr-1"
                             }
+                            onClick={() =>
+                              approveRefund(message.userId, message.eventId)
+                            }
                           />
                           <Button
                             name={
@@ -121,6 +141,9 @@ const Messages = () => {
                               </svg>
                             }
                             styleclass={"bg-failureRed text-white rounded-full"}
+                            onClick={() =>
+                              rejectRefund(message.userId, message.eventId)
+                            }
                           />
                         </td>
                       </tr>

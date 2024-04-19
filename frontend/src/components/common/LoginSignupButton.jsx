@@ -17,7 +17,7 @@ const LoginSignupButton = () => {
     localStorage.clear();
     setToken("");
     toast.success("Succesfully Logged Out");
-    navigate("/user/login");
+    navigate("/");
   }
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const LoginSignupButton = () => {
     document.addEventListener("mousedown", handleClickOutside);
   }, [ref]);
   return (
-    <div>
+    <div className=" mr-3">
       {!token.token ? (
         <>
           <Button
@@ -70,7 +70,7 @@ const LoginSignupButton = () => {
             id="dropdown"
             className={`z-10 absolute ${
               !open ? "hidden" : null
-            } bg-white divide-y divide-gray-100 rounded-lg shadow max-w-sm `}
+            } bg-white divide-y divide-gray-100 rounded-lg shadow `}
           >
             <ul
               className="py-2 text-sm text-gray-700 "
@@ -88,6 +88,17 @@ const LoginSignupButton = () => {
                   Profile
                 </Link>
               </li>
+              {!isAdmin ? (
+                <li className="hover:bg-bluePurple">
+                  <Link
+                    className="block px-4 py-2 rounded hover:bg-gray-100 "
+                    to={"/user/registered-events"}
+                  >
+                    Events
+                  </Link>
+                </li>
+              ) : null}
+
               <li className="hover:bg-bluePurple">
                 <a
                   onClick={handleLogout}

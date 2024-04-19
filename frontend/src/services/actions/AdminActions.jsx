@@ -6,7 +6,6 @@ import { authAtom } from "../../store/atoms/authatom";
 export const useAdminActions = () => {
   const URL = "http://localhost:9000";
   const [auth, setAuth] = useRecoilState(authAtom);
-  console.log(auth);
   axios.defaults.headers.common["Authorization"] = `Bearer ${auth.token}`;
 
   const login = async (email, password) => {
@@ -58,7 +57,42 @@ export const useAdminActions = () => {
 
   const getAllMessages = async () => {
     try {
-    } catch (error) {}
+      const data = await axios.get(URL + "/message/getAllMessages");
+      return data.data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
-  return { login, createEvent, deleteEvent, getBookedDetails };
+
+  const approveRefund = async (userId, eventId) => {
+    try {
+      const data = await axios.post(URL + "/payments/refund", {
+        id: userId,
+        eventId: eventId,
+      });
+      toast.success(data.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  const rejectRefund = async (userId, eventId) => {
+    try {
+      const data = await axios.post(URL + "/payments/rejectRefund", {
+        userId: userId,
+        eventId: eventId,
+      });
+      toast.success(data.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  return {
+    login,
+    createEvent,
+    deleteEvent,
+    getBookedDetails,
+    getAllMessages,
+    approveRefund,
+    rejectRefund,
+  };
 };

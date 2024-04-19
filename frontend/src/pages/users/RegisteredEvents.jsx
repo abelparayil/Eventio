@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
-import Modal from "../../components/common/Modal";
 import Ticket from "../../components/ui/user/Ticket";
-import Button from "../../components/common/Button";
 import { useUserActions } from "../../services/actions/UserActions";
 
 const RegisteredEvents = () => {
   const USER = "VINAY DEV";
   const [eventsId, setEventsId] = useState([]);
   const [userId, setUserId] = useState("");
+  const [fetch, setFetch] = useState(false);
   const useAction = useUserActions();
 
   useEffect(() => {
     async function getAllTickets() {
       const res = await useAction.getAllTickets();
-      console.log(res);
       setUserId(res.userId);
       setEventsId(res.eventIdsWithRefundStatus);
     }
     getAllTickets();
-  }, []);
+  }, [fetch]);
   return (
     <div className="h-screen bg-mainBg overflow-auto">
       <div className="flex justify-center">
@@ -33,6 +31,11 @@ const RegisteredEvents = () => {
               refundStatus={event.refundStatus}
               eventId={event.eventId}
               userId={userId}
+              title={event.eventTitle}
+              dateNtime={event.eventDateAndTime}
+              venue={event.eventVenue}
+              ticketPrice={event.eventPrice}
+              setFetch={setFetch}
             />
           );
         })}

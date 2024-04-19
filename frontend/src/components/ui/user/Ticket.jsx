@@ -3,9 +3,21 @@ import Button from "../../common/Button";
 import { useState } from "react";
 import Modal from "../../common/Modal";
 import { useUserActions } from "../../../services/actions/UserActions";
+import { isoToNormalDate } from "../../../util/TimeConversion";
 
-const Ticket = ({ modal, refundStatus, eventId, userId }) => {
+const Ticket = ({
+  modal,
+  refundStatus,
+  eventId,
+  userId,
+  title,
+  dateNtime,
+  venue,
+  ticketPrice,
+  setFetch,
+}) => {
   // const qrdetails = { id: "eventid", userid: "userid" };
+  console.log(ticketPrice);
   if (!modal) {
     modal = false;
   }
@@ -13,6 +25,10 @@ const Ticket = ({ modal, refundStatus, eventId, userId }) => {
     refundStatus = false;
   }
 
+  const { date, monthName, hours, minutes, AmOrPM, year } =
+    isoToNormalDate(dateNtime);
+  const eventDate = `${date} ${monthName} ${year}`;
+  const time = `${hours}:${minutes} ${AmOrPM}`;
   const [isOpen, setIsOpen] = useState(false);
   const [isMessageModal, setIsMessageModal] = useState(false);
   const [message, setMessage] = useState("");
@@ -21,6 +37,7 @@ const Ticket = ({ modal, refundStatus, eventId, userId }) => {
   async function sendMessage() {
     if (message) {
       await useAction.sendMessage(eventId, message);
+      setFetch((prev) => !prev);
       setIsMessageModal(false);
       setIsOpen(false);
     } else {
@@ -28,14 +45,6 @@ const Ticket = ({ modal, refundStatus, eventId, userId }) => {
     }
   }
 
-  const ticketDetails = {
-    id: "ticketid",
-    title: "AdVITya",
-    time: "10am",
-    venue: "auditorium",
-    date: "22 February",
-    ticketPrice: "Rs.250",
-  };
   const obj = { eventId: eventId, userId: userId };
   console.log(eventId);
   return (
@@ -49,12 +58,12 @@ const Ticket = ({ modal, refundStatus, eventId, userId }) => {
           }}
           className={`${refundStatus ? `blur ` : null}`}
         >
-          <h1 className=" text-2xl text-center text-bluePurple">AdVITya</h1>
+          <h1 className=" text-2xl text-center text-bluePurple">{title}</h1>
           <div className="text-center p-3">
-            <h2>Date:{ticketDetails.date}</h2>
-            <h2>Time:{ticketDetails.time}</h2>
-            <h2>Venue:{ticketDetails.venue}</h2>
-            <h2>Ticket:{ticketDetails.ticketPrice}</h2>
+            <h2>Date:{eventDate}</h2>
+            <h2>Time:{time}</h2>
+            <h2>Venue:{venue}</h2>
+            <h2>Ticket:{ticketPrice}</h2>
           </div>
           <div className=" p-10">
             <QRCode size={!modal ? 150 : 256} value={JSON.stringify(obj)} />
@@ -79,10 +88,10 @@ const Ticket = ({ modal, refundStatus, eventId, userId }) => {
                     AdVITya
                   </h1>
                   <div className="text-center p-3">
-                    <h2>Date:{ticketDetails.date}</h2>
-                    <h2>Time:{ticketDetails.time}</h2>
-                    <h2>Venue:{ticketDetails.venue}</h2>
-                    <h2>Ticket:{ticketDetails.ticketPrice}</h2>
+                    <h2>Date:{date}</h2>
+                    <h2>Time:{time}</h2>
+                    <h2>Venue:{venue}</h2>
+                    <h2>Ticket:{ticketPrice}</h2>
                   </div>
                   <div className=" p-10">
                     <QRCode
