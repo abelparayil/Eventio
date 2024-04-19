@@ -18,6 +18,10 @@ const paymentSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  amount: {
+    type: Number,
+  },
+
   userPaid: {
     type: Schema.Types.ObjectId,
     ref: "User",

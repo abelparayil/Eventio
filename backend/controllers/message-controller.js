@@ -15,9 +15,9 @@ export const addMessage = async (req, res) => {
     event: eventId,
   });
 
-  if (!bookingExists) {
-    return res.status(400).json({ message: "Booking does not exist" });
-  }
+  // if (!bookingExists) {
+  //   return res.status(400).json({ message: "Booking does not exist" });
+  // }
 
   await Payments.findByIdAndUpdate(bookingExists.payment, {
     refund: true,
