@@ -16,7 +16,11 @@ export const useAdminActions = () => {
       });
       if (res.status === 200) {
         localStorage.setItem("user", res.data.token);
-        setAuth((prev) => ({ ...prev, token: res.data.token }));
+        setAuth((prev) => ({
+          ...prev,
+          token: res.data.token,
+          email: res.data.email,
+        }));
         toast.success(res.data.message);
       }
       return res;
@@ -86,6 +90,7 @@ export const useAdminActions = () => {
       toast.error(error.response.data.message);
     }
   };
+  const updateEventStatus = async (eventId, status) => {};
   return {
     login,
     createEvent,

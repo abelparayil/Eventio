@@ -1,6 +1,10 @@
+import { useRecoilValue } from "recoil";
 import Button from "../../common/Button";
+import { authAtom } from "../../../store/atoms/authatom";
 
 const Profile = () => {
+  const email = useRecoilValue(authAtom).email;
+  console.log(email);
   return (
     <div className="w-full flex justify-center items-center">
       <div className="p-5 border-2 rounded">
@@ -20,11 +24,11 @@ const Profile = () => {
             />
           </svg>
 
-          <h1>Mrudul Mohan</h1>
+          <h1>Administrator</h1>
         </div>
         <div className=" p-5">
-          <h2 className=" mb-4 text-2xl">Name:Mrudul Mohan</h2>
-          <h2 className="text-2xl">Email:admin@gmail.com</h2>
+          <h2 className=" mb-4 text-2xl">Name:Admin</h2>
+          <h2 className="text-2xl">Email:{email}</h2>
         </div>
         <div className="flex justify-end">
           <Button name={"EDIT"} styleclass={"bg-bluePurple rounded"} />
