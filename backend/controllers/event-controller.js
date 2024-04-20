@@ -74,6 +74,42 @@ export const addEvent = async (req, res, next) => {
   }
 };
 
+// export const addFutureEvent = async (req, res, next) => {
+//   try {
+//     const {
+//       eventTitle,
+//       radio,
+//       venue,
+//       time,
+//       startdate,
+//       ticketprice,
+//       description,
+//     } = eventSchema.parse(req.body.formdata);
+//     const image = req.file.filename;
+//     const eventData = {
+//       eventTitle,
+//       category: radio,
+//       eventImages: [
+//         {
+//           imgName: image,
+//           imgPath: "uploads/" + image,
+//           imgType: "image",
+//         },
+//       ],
+//       eventDateAndTime: new Date(startdate + " " + time),
+//       eventVenue: venue,
+//       ticketPrice: ticketprice,
+//       discription: description,
+//       eventOngoing: false,
+//     };
+//     const newEvent = new Event(eventData);
+//     const event = await newEvent.save();
+//     res.status(201).json({ message: "Event added successfully" });
+//   } catch (error) {
+//     return res.status(400).json({ message: error.errors });
+//   }
+// };
+
 export const getEventById = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -128,11 +164,12 @@ export const updateEvent = async (req, res, next) => {
 
 export const deleteEvent = async (req, res, next) => {
   try {
-    const event = await Event.findById(req.params.id);
-    if (!event) {
+    const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+
+    if (!deletedEvent) {
       return res.status(404).json({ message: "Event not found" });
     }
-    await event.remove();
+
     return res.status(200).json({ message: "Event deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
@@ -151,13 +188,36 @@ export const getEventBookings = async (req, res, next) => {
   }
 };
 
+export const getEventBookingsStudentDetails = async (req, res, next) => {
+  const id = req.body.id;
+  console.log(id);
+  const event = await Event.findById(id).populate({
+    path: "bookings",
+    select: "user",
+    populate: {
+      path: "user",
+      select: "name email",
+    },
+  });
+  console.log(event);
+  if (!event) {
+    return res.status(404).json({ message: "Event not found" });
+  }
+  return res.status(200).json({
+    bookings: event.bookings,
+    numberOfBookings: event.numberOfBookings,
+  });
+};
+
 export const eventCompleted = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    event.eventCompleted = true;
+    event = await Event.findByIdAndUpdate(req.params.id, {
+      completed: true,
+    });
     await event.save();
     return res.status(200).json({ message: "Event completed successfully" });
   } catch (error) {

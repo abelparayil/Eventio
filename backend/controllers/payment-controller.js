@@ -71,7 +71,12 @@ export const capturePayment = async (req, res, next) => {
 
       await Event.findByIdAndUpdate(eventId, {
         $push: { bookings: savedBooking._id },
+        $inc: { numberOfBookings: 1 },
       });
+
+      // await Event.findByIdAndUpdate(eventId,{
+      //   $inc: { totalBookings: 1 }
+      // })
     } catch (error) {
       console.log(error);
     }

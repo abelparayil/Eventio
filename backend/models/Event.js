@@ -38,7 +38,14 @@ const eventSchema = new Schema({
     type: Boolean,
     default: false,
   },
-
+  eventOngoing: {
+    type: Boolean,
+    default: false,
+  },
+  numberOfBookings: {
+    type: Number,
+    default: 0,
+  },
   bookings: [
     {
       type: Schema.Types.ObjectId,
