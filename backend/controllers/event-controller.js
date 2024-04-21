@@ -39,6 +39,56 @@ export const getAllEvents = async (req, res, next) => {
   }
 };
 
+export const getOngoingEvents = async (req, res, next) => {
+  try {
+    const events = await Event.find({ eventOngoing: true });
+    const eventsWithImages = events.map((event) => {
+      return {
+        _id: event._id,
+        eventTitle: event.eventTitle,
+        category: event.category,
+        eventImages: event.eventImages.map((image) => {
+          return {
+            imgName: image.imgName,
+          };
+        }),
+        eventDateAndTime: event.eventDateAndTime,
+        eventVenue: event.eventVenue,
+        ticketPrice: event.ticketPrice,
+        description: event.description,
+      };
+    });
+    res.status(200).json(eventsWithImages);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getCompletedEvents = async (req, res, next) => {
+  try {
+    const events = await Event.find({ eventCompleted: true });
+    const eventsWithImages = events.map((event) => {
+      return {
+        _id: event._id,
+        eventTitle: event.eventTitle,
+        category: event.category,
+        eventImages: event.eventImages.map((image) => {
+          return {
+            imgName: image.imgName,
+          };
+        }),
+        eventDateAndTime: event.eventDateAndTime,
+        eventVenue: event.eventVenue,
+        ticketPrice: event.ticketPrice,
+        description: event.description,
+      };
+    });
+    res.status(200).json(eventsWithImages);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const addEvent = async (req, res, next) => {
   try {
     const {
@@ -74,41 +124,24 @@ export const addEvent = async (req, res, next) => {
   }
 };
 
-// export const addFutureEvent = async (req, res, next) => {
-//   try {
-//     const {
-//       eventTitle,
-//       radio,
-//       venue,
-//       time,
-//       startdate,
-//       ticketprice,
-//       description,
-//     } = eventSchema.parse(req.body.formdata);
-//     const image = req.file.filename;
-//     const eventData = {
-//       eventTitle,
-//       category: radio,
-//       eventImages: [
-//         {
-//           imgName: image,
-//           imgPath: "uploads/" + image,
-//           imgType: "image",
-//         },
-//       ],
-//       eventDateAndTime: new Date(startdate + " " + time),
-//       eventVenue: venue,
-//       ticketPrice: ticketprice,
-//       discription: description,
-//       eventOngoing: false,
-//     };
-//     const newEvent = new Event(eventData);
-//     const event = await newEvent.save();
-//     res.status(201).json({ message: "Event added successfully" });
-//   } catch (error) {
-//     return res.status(400).json({ message: error.errors });
-//   }
-// };
+export const convertEventToOngoing = async (req, res, next) => {
+  try {
+    console.log("reachd here");
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    if (event.eventOngoing) {
+      return res.status(400).json({ message: "Event already ongoing" });
+    }
+    await Event.findByIdAndUpdate(req.params.id, {
+      eventOngoing: true,
+    });
+    return res.status(200).json({ message: "Event converted to ongoing" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 export const getEventById = async (req, res, next) => {
   try {
@@ -215,10 +248,11 @@ export const eventCompleted = async (req, res, next) => {
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    event = await Event.findByIdAndUpdate(req.params.id, {
-      completed: true,
+
+    await Event.findByIdAndUpdate(req.params.id, {
+      eventCompleted: true,
     });
-    await event.save();
+    console.log(event);
     return res.status(200).json({ message: "Event completed successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });

@@ -16,7 +16,7 @@ bookingRouter.post("/bookEvent/:eventId", verifyUserToken, addBooking);
 bookingRouter.delete("/cancelBooking/:id", verifyUserToken, deleteBooking);
 bookingRouter.get("/getBooking/:eventId", verifyUserToken, getBookingId);
 bookingRouter.get("/getAllBooking", verifyUserToken, getAllBooking);
-bookingRouter.get(
+bookingRouter.post(
   "/getStudentDetails",
   verifyAdminToken,
   getEventBookingsStudentDetails

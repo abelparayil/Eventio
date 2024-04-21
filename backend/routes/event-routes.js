@@ -1,6 +1,8 @@
 import express from "express";
 import {
   addEvent,
+  convertEventToOngoing,
+  // addFutureEvent,
   deleteEvent,
   eventCompleted,
   getAllEvents,
@@ -20,6 +22,7 @@ eventRouter.post(
   upload.single("image"),
   addEvent
 );
+eventRouter.post("/eventOngoing/:id", verifyAdminToken, convertEventToOngoing);
 eventRouter.get("/:id", getEventById);
 eventRouter.post("/updateEvent/:id", verifyAdminToken, updateEvent);
 eventRouter.delete("/deleteEvent/:id", verifyAdminToken, deleteEvent);
