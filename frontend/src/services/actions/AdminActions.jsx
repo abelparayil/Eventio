@@ -7,7 +7,7 @@ export const useAdminActions = () => {
   const URL = "http://localhost:9000";
   const [auth, setAuth] = useRecoilState(authAtom);
   axios.defaults.headers.common["Authorization"] = `Bearer ${auth.token}`;
-
+  console.log(auth);
   const login = async (email, password) => {
     try {
       const res = await axios.post(URL + "/admin/login", {
@@ -16,6 +16,7 @@ export const useAdminActions = () => {
       });
       if (res.status === 200) {
         localStorage.setItem("user", res.data.token);
+        localStorage.setItem("userdata", res.data.email);
         setAuth((prev) => ({
           ...prev,
           token: res.data.token,
@@ -52,8 +53,11 @@ export const useAdminActions = () => {
 
   const getBookedDetails = async (eventId) => {
     try {
-      const data = await axios.get(URL + `/event/bookings/${eventId}`);
-      return data;
+      console.log(eventId);
+      const data = await axios.post(URL + `/bookings/getStudentDetails`, {
+        id: eventId,
+      });
+      return data.data;
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -90,7 +94,17 @@ export const useAdminActions = () => {
       toast.error(error.response.data.message);
     }
   };
+
   const updateEventStatus = async (eventId, status) => {};
+
+  const sendQRDatas = async (eventId, userId) => {
+    try {
+      const data = await axios.post(URL + "/", {
+        userId: userId,
+        eventId: eventId,
+      });
+    } catch (error) {}
+  };
   return {
     login,
     createEvent,
