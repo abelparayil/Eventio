@@ -146,24 +146,17 @@ export const convertEventToOngoing = async (req, res, next) => {
 export const getEventById = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
-    const eventWithImages = {
+    const eventDetails = {
       _id: event._id,
       eventTitle: event.eventTitle,
       category: event.category,
-      eventImages: event.eventImages.map((image) => {
-        return {
-          imgName: image.imgName,
-        };
-      }),
       eventDateAndTime: event.eventDateAndTime,
       eventVenue: event.eventVenue,
-      ticketPrice: event.ticketPrice,
-      description: event.description,
     };
-    if (!eventWithImages) {
+    if (!eventDetails) {
       return res.status(404).json({ message: "Event not found" });
     }
-    res.status(200).json(eventWithImages);
+    res.status(200).json(eventDetails);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
