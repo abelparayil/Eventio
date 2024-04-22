@@ -26,8 +26,23 @@ export const upload = multer({
 
 export const getAllEvents = async (req, res, next) => {
   try {
-    const events = await Event.find();
+    let events = await Event.find();
     const eventsWithImages = events.map((event) => {
+      let eventDateAndTime = event.eventDateAndTime;
+      eventDateAndTime.setHours(eventDateAndTime.getHours() + 5);
+      eventDateAndTime.setMinutes(eventDateAndTime.getMinutes() + 30);
+      console.log(eventDateAndTime);
+
+      let eventStatus = "Scheduled";
+
+      if (event.eventOngoing) {
+        eventStatus = "Ongoing";
+      }
+
+      if (event.eventCompleted) {
+        eventStatus = "Completed";
+      }
+
       return {
         _id: event._id,
         eventTitle: event.eventTitle,
@@ -37,8 +52,9 @@ export const getAllEvents = async (req, res, next) => {
             imgName: image.imgName,
           };
         }),
-        eventDateAndTime: event.eventDateAndTime,
+        eventDateAndTime: eventDateAndTime,
         eventVenue: event.eventVenue,
+        eventStatus: eventStatus,
         ticketPrice: event.ticketPrice,
         description: event.description,
       };
@@ -122,10 +138,8 @@ export const addEvent = async (req, res, next) => {
 
     const convertedTime = convertTimeTo24Hour(time, period);
 
-    const eventDateTimeUTC = new Date(startdate + "T" + convertedTime + ":00");
-    const eventDateTimeIST = new Date(
-      eventDateTimeUTC.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-    );
+    const eventDateTimeUTC = new Date(startdate + "T" + convertedTime + ":00Z");
+
     const eventData = {
       eventTitle,
       category: radio,
@@ -136,7 +150,7 @@ export const addEvent = async (req, res, next) => {
           imgType: "image",
         },
       ],
-      eventDateAndTime: eventDateTimeIST,
+      eventDateAndTime: eventDateTimeUTC,
       eventVenue: venue,
       ticketPrice: ticketprice,
       description,
