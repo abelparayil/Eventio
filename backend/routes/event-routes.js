@@ -7,6 +7,7 @@ import {
   eventFilterAdmin,
   eventFilterUser,
   getAllEvents,
+  getCategoriesForFilter,
   getEventBookings,
   getEventById,
   getOngoingEvents,
@@ -22,6 +23,7 @@ eventRouter.get("/", getAllEvents);
 eventRouter.get("/userEvents", verifyUserToken, getOngoingEvents);
 eventRouter.get("/bookings/:id", verifyAdminToken, getEventBookings);
 eventRouter.get("/:id", getEventById);
+eventRouter.get("/distinctCategory/:field", getCategoriesForFilter);
 
 eventRouter.post("/addEvent", verifyAdminToken, updateAdminToken, upload.single("image"), addEvent);
 eventRouter.post("/eventOngoing/:id", verifyAdminToken, convertEventToOngoing);

@@ -4,9 +4,7 @@ export const verifyUserToken = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized: No token provided " });
+    return res.status(401).json({ message: "Unauthorized: No token provided " });
   }
 
   const modifiedToken = token.split(" ")[1];

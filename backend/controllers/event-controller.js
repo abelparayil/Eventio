@@ -434,3 +434,24 @@ export const eventFilterAdmin = async (req, res, next) => {
     });
   }
 };
+
+export const getCategoriesForFilter = async (req, res, next) => {
+  try {
+    const { field } = req.params;
+
+    const validFields = ["category", "eventVenue"];
+    if (!validFields.includes(field)) {
+      return res.status(400).json({ message: "Invalid field" });
+    }
+
+    const distinctValues = await Event.distinct(field);
+    if (distinctValues.length === 0) {
+      return res.status(404).json({ message: "No categories found" });
+    }
+    return res.status(200).json(distinctValues);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
