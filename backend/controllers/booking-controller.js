@@ -21,9 +21,7 @@ export const addBooking = async (req, res, next) => {
       $push: { bookings: savedBooking._id },
     });
 
-    res
-      .status(201)
-      .json({ message: "Booking successful", booking: savedBooking });
+    res.status(201).json({ message: "Booking successful", booking: savedBooking });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -79,9 +77,7 @@ export const getAllBooking = async (req, res, next) => {
   try {
     const userId = req.userId.id;
 
-    const bookings = await Booking.find({ user: userId })
-      .populate("event")
-      .populate("payment");
+    const bookings = await Booking.find({ user: userId }).populate("event").populate("payment");
     bookings.forEach((booking) => {
       const event = booking.event._id;
       const eventTitle = booking.event.eventTitle;
@@ -133,7 +129,6 @@ export const getAllCancelledBookings = async (req, res) => {
   const userId = req.userId.id;
 
   try {
-    //get bookings that either has ticketUsed true or cancelled true
     const bookings = await Booking.find({
       user: userId,
       $or: [{ ticketUsed: true }, { cancelled: true }],
@@ -144,5 +139,25 @@ export const getAllCancelledBookings = async (req, res) => {
     res.status(200).json(bookings);
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+};
+
+export const doesBookingExist = async (req, res, next) => {
+  try {
+    const userId = req.userId.id;
+    const eventId = req.params.eventId;
+
+    const booking = await Booking.findOne({
+      user: userId,
+      event: eventId,
+    });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    next();
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -12,15 +12,13 @@ import { getEventBookingsStudentDetails } from "../controllers/event-controller.
 
 const bookingRouter = express.Router();
 
-bookingRouter.post("/bookEvent/:eventId", verifyUserToken, addBooking);
-bookingRouter.delete("/cancelBooking/:id", verifyUserToken, deleteBooking);
-bookingRouter.get("/getBooking/:eventId", verifyUserToken, getBookingId);
 bookingRouter.get("/getAllBooking", verifyUserToken, getAllBooking);
-bookingRouter.post(
-  "/getStudentDetails",
-  verifyAdminToken,
-  getEventBookingsStudentDetails
-);
+bookingRouter.get("/getBooking/:eventId", verifyUserToken, getBookingId);
+
+bookingRouter.post("/bookEvent/:eventId", verifyUserToken, addBooking);
+bookingRouter.post("/getStudentDetails", verifyAdminToken, getEventBookingsStudentDetails);
 bookingRouter.post("/ticketScan", verifyAdminToken, useTicket);
+
+bookingRouter.delete("/cancelBooking/:id", verifyUserToken, deleteBooking);
 
 export default bookingRouter;

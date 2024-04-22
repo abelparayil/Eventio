@@ -40,8 +40,7 @@ export const createPayment = async (req, res) => {
 export const capturePayment = async (req, res, next) => {
   try {
     const { response, eventId } = req.body;
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      response;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = response;
 
     const userId = req.userId.id;
 
@@ -98,9 +97,7 @@ export const capturePayment = async (req, res, next) => {
       payment: savedPayment._id,
     });
 
-    return res
-      .status(200)
-      .json({ message: "Payment successful and bookings added", newPayment });
+    return res.status(200).json({ message: "Payment successful and bookings added", newPayment });
   } catch (err) {
     res.status(500).json({ message: "Some error occurred" });
   }
@@ -133,10 +130,7 @@ export const refundPayment = async (req, res) => {
   };
   let refund = null;
   try {
-    refund = await instance.payments.refund(
-      payment.razorpayDetails.paymentId,
-      options
-    );
+    refund = await instance.payments.refund(payment.razorpayDetails.paymentId, options);
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: "Payment not refunded" });

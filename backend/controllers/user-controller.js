@@ -101,14 +101,12 @@ export const login = async (req, res, next) => {
     { expiresIn: "1h" }
   );
 
-  return res
-    .status(200)
-    .json({
-      message: "login successful",
-      token,
-      name: existingUser.name,
-      email: existingUser.email,
-    });
+  return res.status(200).json({
+    message: "login successful",
+    token,
+    name: existingUser.name,
+    email: existingUser.email,
+  });
 };
 
 export const resetPassword = async (req, res, next) => {
@@ -144,7 +142,5 @@ export const resetPassword = async (req, res, next) => {
 };
 
 export const isUser = async (req, res, next) => {
-  return res
-    .status(200)
-    .json({ message: "User is authenticated", isUser: true });
+  return res.status(200).json({ message: "User is authenticated", isUser: true });
 };
