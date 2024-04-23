@@ -1,16 +1,16 @@
 import AdminEventCard from "./AdminEventCard";
 import AdminAddEventCard from "./AdminAddEventCard";
 import { useRecoilState } from "recoil";
-import { upcomingEventAtom } from "../../store/atoms/eventsAtom";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import { useAdminActions } from "../../services/actions/AdminActions";
 import { useState } from "react";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import { adminEventsAtom } from "../../store/atoms/adminEventsAtom";
 
 const Events = () => {
-  const [events, setEvents] = useRecoilState(upcomingEventAtom);
+  const [events, setEvents] = useRecoilState(adminEventsAtom);
   console.log(events);
   const adminAction = useAdminActions();
   const [edit, setEdit] = useState({});
@@ -141,7 +141,7 @@ const Events = () => {
                       />
                     </td>
                     <td class="px-6 py-4">
-                      <select name="event-status" id="event-status">
+                      <select name="event-status" id="event-status" >
                         <option value="Scheduled">Scheduled</option>
                         <option value="Ongoing">Ongoing</option>
                         <option value="Completed">Completed</option>
@@ -178,6 +178,7 @@ const Events = () => {
                         }
                         styleclass={"bg-bluePurple rounded text-white"}
                         onClick={() => {
+                          await adminAction.
                           // setEventDetails({});
                           // setEdit({});
                         }}
