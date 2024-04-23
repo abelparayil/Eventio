@@ -30,6 +30,9 @@ const eventSchema = new Schema({
     type: Number,
     required: true,
   },
+  description: {
+    type: String,
+  },
   eventVenue: {
     type: String,
     required: true,
