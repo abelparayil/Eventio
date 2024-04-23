@@ -79,3 +79,11 @@ export const resetPassword = async (req, res) => {
 export const isAdmin = async (req, res) => {
   return res.status(200).json({ message: "Admin verified", isAdmin: true });
 };
+
+export const deleteUnverifiedUsers = async () => {
+  try {
+    await User.deleteMany({ verified: false });
+  } catch (err) {
+    return console.log(err);
+  }
+};

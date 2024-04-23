@@ -17,7 +17,14 @@ const userSchema = new Schema({
     required: true,
     minLength: 8,
   },
-
+  verificationCode: {
+    type: Number,
+    required: true,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
   bookedEvents: [
     {
       type: Schema.Types.ObjectId,
