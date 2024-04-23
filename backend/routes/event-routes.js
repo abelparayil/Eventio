@@ -19,8 +19,8 @@ import { verifyUserToken } from "../middleware/user-middleware.js";
 
 const eventRouter = express.Router();
 
-eventRouter.get("/", getAllEvents);
-eventRouter.get("/userEvents", verifyUserToken, getOngoingEvents);
+eventRouter.get("/", verifyAdminToken, getAllEvents);
+eventRouter.get("/userEvents", getOngoingEvents);
 eventRouter.get("/bookings/:id", verifyAdminToken, getEventBookings);
 eventRouter.get("/:id", getEventById);
 eventRouter.get("/distinctCategory/:field", getCategoriesForFilter);
