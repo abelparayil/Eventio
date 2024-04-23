@@ -45,6 +45,8 @@ export const useUserActions = () => {
       const res = await axios.post(URL + "/user/login", { email, password });
       if (res.status === 200) {
         localStorage.setItem("user", res.data.token);
+        localStorage.setItem("userName", res.data.name);
+        localStorage.setItem("email", res.data.email);
         setAuth((prev) => ({
           ...prev,
           token: res.data.token,

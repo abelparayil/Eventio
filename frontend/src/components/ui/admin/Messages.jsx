@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../../common/Button";
 import { useAdminActions } from "../../../services/actions/AdminActions";
+import Loader from "../../layout/Loader";
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -34,7 +35,7 @@ const Messages = () => {
     setFetch((prev) => !prev);
   }
   if (loading) {
-    return <span>Loading</span>;
+    return <Loader />;
   }
 
   return (
