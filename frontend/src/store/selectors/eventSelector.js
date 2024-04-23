@@ -7,7 +7,7 @@ export const upcomingEventSelector = selector({
   key: "upcomingEventSelector",
   get: async () => {
     try {
-      const response = await axios.get(URL + "event");
+      const response = await axios.get(URL + "event/userEvents");
       const filtered = response.data.filter((event) => {
         return (event.eventDateAndTime = isoToNormalDate(
           event.eventDateAndTime

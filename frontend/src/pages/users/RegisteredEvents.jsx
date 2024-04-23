@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import Ticket from "../../components/ui/user/Ticket";
 import { useUserActions } from "../../services/actions/UserActions";
-import { useRecoilValue } from "recoil";
-import { authAtom } from "../../store/atoms/authatom";
 
 const RegisteredEvents = () => {
   const USER = localStorage.getItem("userName");

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { toast } from "react-toastify";
 import { authAtom } from "../../store/atoms/authatom";
+import { isoToNormalDate } from "../../util/TimeConversion";
 
 export const useAdminActions = () => {
   const URL = "http://localhost:9000";
@@ -37,6 +38,20 @@ export const useAdminActions = () => {
       if (error.response.status === 401) {
         setAuth((prev) => ({ ...prev, token: null }));
       }
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const getAllEvents = async () => {
+    try {
+      const data = await axios.get(URL + "/event");
+      const filtered = data.data.filter((event) => {
+        return (event.eventDateAndTime = isoToNormalDate(
+          event.eventDateAndTime
+        ));
+      });
+      return filtered;
+    } catch (error) {
       toast.error(error.response.data.message);
     }
   };
@@ -95,7 +110,19 @@ export const useAdminActions = () => {
     }
   };
 
-  const updateEventStatus = async (eventId, status) => {};
+  const updateEventStatus = async (eventId, status) => {
+    try {
+      if (status == "Completed") {
+        const data = await axios.post(URL + `/event/eventCompleted/${eventId}`);
+        toast.success(data.data.message);
+      } else if (status == "Ongoing") {
+        const data = await axios.post(URL + `/event/eventOngoing/${eventId}`);
+        toast.success(data.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   const sendQRDatas = async (eventId, userId) => {
     try {
@@ -111,7 +138,9 @@ export const useAdminActions = () => {
     deleteEvent,
     getBookedDetails,
     getAllMessages,
+    getAllEvents,
     approveRefund,
     rejectRefund,
+    updateEventStatus,
   };
 };
