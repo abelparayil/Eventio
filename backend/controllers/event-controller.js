@@ -228,11 +228,6 @@ export const updateEvent = async (req, res, next) => {
     }
 
     event.eventTitle = eventData.eventTitle;
-    event.category = eventData.category;
-    event.eventDateAndTime = new Date(eventData.eventDateAndTime);
-    event.eventVenue = eventData.eventVenue;
-    event.ticketPrice = eventData.ticketPrice;
-    event.description = eventData.description;
 
     await event.save();
     res.status(200).json({
@@ -253,6 +248,7 @@ export const updateEvent = async (req, res, next) => {
 export const deleteEvent = async (req, res, next) => {
   try {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+    console.log(deletedEvent);
 
     if (!deletedEvent) {
       return res.status(404).json({

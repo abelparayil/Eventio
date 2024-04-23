@@ -15,7 +15,7 @@ const paymentRouter = express.Router();
 paymentRouter.get("/paymentResponse", paymentResponse);
 
 paymentRouter.post("/pay", verifyUserToken, createPayment);
-paymentRouter.post("/paymentCapture", verifyUserToken, doesBookingExist, capturePayment);
+paymentRouter.post("/paymentCapture", verifyUserToken, capturePayment);
 paymentRouter.post("/refund", verifyAdminToken, refundPayment);
 paymentRouter.post("/rejectRefund", verifyAdminToken, rejectRefund);
 
