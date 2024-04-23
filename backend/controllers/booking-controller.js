@@ -152,11 +152,12 @@ export const doesBookingExist = async (req, res, next) => {
       event: eventId,
     });
 
-    if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+
+    if (booking) {
+      return res.status(404).json({ message: "Booking exists" });
     }
 
-    next();
+    res.status(200).json({ message: "Booking does not exist" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
