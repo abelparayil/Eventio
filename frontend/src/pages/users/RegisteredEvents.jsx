@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import Ticket from "../../components/ui/user/Ticket";
 import { useUserActions } from "../../services/actions/UserActions";
-import { useRecoilValue } from "recoil";
-import { authAtom } from "../../store/atoms/authatom";
 
 const RegisteredEvents = () => {
-  const USER = useRecoilValue(authAtom).name;
+  const USER = localStorage.getItem("userName");
   const [eventsId, setEventsId] = useState([]);
   const [userId, setUserId] = useState("");
   const [fetch, setFetch] = useState(false);
@@ -14,6 +12,7 @@ const RegisteredEvents = () => {
   useEffect(() => {
     async function getAllTickets() {
       const res = await useAction.getAllTickets();
+      console.log(res);
       setUserId(res.userId);
       setEventsId(res.eventIdsWithRefundStatus);
     }

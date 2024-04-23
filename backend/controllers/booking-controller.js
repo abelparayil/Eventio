@@ -152,6 +152,7 @@ export const doesBookingExist = async (req, res, next) => {
       event: eventId,
     });
 
+
     if (booking) {
       return res.status(404).json({ message: "Booking exists" });
     }
