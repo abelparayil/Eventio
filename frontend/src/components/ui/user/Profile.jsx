@@ -3,7 +3,8 @@ import Button from "../../common/Button";
 import { authAtom } from "../../../store/atoms/authatom";
 
 const Profile = () => {
-  const user = useRecoilValue(authAtom).name;
+  const user = localStorage.getItem("userName");
+  const email = localStorage.getItem("email");
   return (
     <div className="w-full flex justify-center items-center">
       <div className="p-5 border-2 rounded">
@@ -27,7 +28,7 @@ const Profile = () => {
         </div>
         <div className=" p-5">
           <h2 className=" mb-4 text-2xl">Name:{user}</h2>
-          <h2 className="text-2xl">Email:admin@gmail.com</h2>
+          <h2 className="text-2xl">Email:{email}</h2>
         </div>
         <div className="flex justify-end">
           <Button name={"EDIT"} styleclass={"bg-bluePurple rounded"} />

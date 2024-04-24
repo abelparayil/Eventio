@@ -126,11 +126,41 @@ export const useAdminActions = () => {
 
   const sendQRDatas = async (eventId, userId) => {
     try {
-      const data = await axios.post(URL + "/", {
+      const data = await axios.post(URL + "/bookings/ticketScan", {
         userId: userId,
         eventId: eventId,
       });
-    } catch (error) {}
+      toast.success(data.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const filteredEvents = async (filtering) => {
+    try {
+      if (filtering) {
+        const res = await axios.post(
+          URL + "/event/filterEventsAdmin",
+          filtering
+        );
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      } else {
+        const res = await axios.post(URL + "/event/filterEventsAdmin");
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
   return {
     login,
@@ -142,5 +172,7 @@ export const useAdminActions = () => {
     approveRefund,
     rejectRefund,
     updateEventStatus,
+    filteredEvents,
+    sendQRDatas,
   };
 };
