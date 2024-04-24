@@ -13,7 +13,7 @@ const EventCard = ({ id, title, date, venue, image }) => {
   const isUser = useRecoilValue(isUserSelector);
   const userAction = useCommonActions();
   const navigate = useNavigate();
-
+  console.log(id, title, date, venue, image);
   useEffect(() => {
     AOS.init();
     userAction

@@ -126,11 +126,14 @@ export const useAdminActions = () => {
 
   const sendQRDatas = async (eventId, userId) => {
     try {
-      const data = await axios.post(URL + "/", {
+      const data = await axios.post(URL + "/bookings/ticketScan", {
         userId: userId,
         eventId: eventId,
       });
-    } catch (error) {}
+      toast.success(data.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
   return {
     login,
@@ -142,5 +145,6 @@ export const useAdminActions = () => {
     approveRefund,
     rejectRefund,
     updateEventStatus,
+    sendQRDatas,
   };
 };

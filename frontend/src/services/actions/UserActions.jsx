@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { authAtom } from "../../store/atoms/authatom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { isoToNormalDate } from "../../util/TimeConversion";
 
 export const useUserActions = () => {
   const URL = "http://localhost:9000";
@@ -81,5 +82,50 @@ export const useUserActions = () => {
       toast.error(error.response.data.message);
     }
   };
-  return { signup, login, checkEmail, checkOTP, getAllTickets, sendMessage };
+
+  const getAllVenues = async () => {
+    try {
+      const res = await axios.get(URL + "/event/distinctCategory/eventVenue");
+      return res.data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const filteredEvents = async (filtering) => {
+    try {
+      if (filtering) {
+        const res = await axios.post(
+          URL + "/event/filterEventsUser",
+          filtering
+        );
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      } else {
+        const res = await axios.post(URL + "/event/filterEventsUser");
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  return {
+    signup,
+    login,
+    checkEmail,
+    getAllVenues,
+    checkOTP,
+    getAllTickets,
+    sendMessage,
+    filteredEvents,
+  };
 };
