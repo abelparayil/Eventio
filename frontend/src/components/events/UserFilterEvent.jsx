@@ -132,7 +132,7 @@ const UserFilterEvent = ({ setEvents, filter, setFilter, admin }) => {
                   setFilter({
                     category: "",
                     venue: "",
-                    startdate: "",
+                    startDate: "",
                     endDate: "",
                     status: "",
                   });
@@ -140,7 +140,7 @@ const UserFilterEvent = ({ setEvents, filter, setFilter, admin }) => {
                   setFilter({
                     category: "",
                     venue: "",
-                    startdate: "",
+                    startDate: "",
                     endDate: "",
                   });
                 }

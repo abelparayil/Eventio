@@ -35,7 +35,9 @@ const UpcomingEvents = () => {
         />
       </div>
       {events.length === 0 ? (
-        <div>No Events</div>
+        <div className="w-full h-44  text-3xl text-bluePurple flex justify-center items-center">
+          No Events
+        </div>
       ) : (
         <div className=" p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4  ">
           {events.map((event) => (
