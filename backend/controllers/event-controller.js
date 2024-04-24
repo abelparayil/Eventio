@@ -430,6 +430,15 @@ export const eventFilterAdmin = async (req, res, next) => {
       });
     }
     const eventsWithImages = events.map((event) => {
+      if (event.eventOngoing) {
+        event.eventStatus = "Ongoing";
+      }
+      if (event.eventCompleted) {
+        event.eventStatus = "Completed";
+      }
+      if (!event.eventOngoing && !event.eventCompleted) {
+        event.eventStatus = "Scheduled";
+      }
       return {
         _id: event._id,
         eventTitle: event.eventTitle,
@@ -441,6 +450,7 @@ export const eventFilterAdmin = async (req, res, next) => {
         }),
         eventDateAndTime: event.eventDateAndTime,
         eventVenue: event.eventVenue,
+        eventStatus: event.eventStatus,
         ticketPrice: event.ticketPrice,
         description: event.description,
       };
