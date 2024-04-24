@@ -369,9 +369,7 @@ export const eventFilterUser = async (req, res, next) => {
   try {
     const events = await Event.find(filter);
     if (events.length === 0) {
-      return res.status(404).json({
-        message: "No events found",
-      });
+      return res.status(200).json([]);
     }
     const eventsWithImages = events.map((event) => {
       return {
@@ -425,9 +423,7 @@ export const eventFilterAdmin = async (req, res, next) => {
   try {
     const events = await Event.find(filter);
     if (events.length === 0) {
-      return res.status(404).json({
-        message: "No events found",
-      });
+      return res.status(200).json([]);
     }
     const eventsWithImages = events.map((event) => {
       if (event.eventOngoing) {
