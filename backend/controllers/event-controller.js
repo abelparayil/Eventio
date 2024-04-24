@@ -2,15 +2,9 @@ import { ZodError } from "zod";
 import Event from "../models/Event.js";
 import { eventSchema } from "../models/zodSchemas.js";
 import multer from "multer";
+import { s3upload } from "../s3Service.js";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+const storage = multer.memoryStorage();
 
 const convertTimeTo24Hour = (time, period) => {
   let [hours, minutes] = time.split(":");
@@ -22,7 +16,28 @@ const convertTimeTo24Hour = (time, period) => {
 
 export const upload = multer({
   storage: storage,
+  limits: { fileSize: 1024 * 1024 * 5 },
 });
+
+export const uploadAndS3Upload = async (req, res, next) => {
+  upload.single("image")(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({
+        message: "Image upload failed",
+      });
+    }
+
+    try {
+      const result = await s3upload(req.file);
+      req.s3Data = result;
+      next();
+    } catch (error) {
+      return res.status(400).json({
+        message: "Image upload failed",
+      });
+    }
+  });
+};
 
 export const getAllEvents = async (req, res, next) => {
   try {
@@ -49,7 +64,7 @@ export const getAllEvents = async (req, res, next) => {
         category: event.category,
         eventImages: event.eventImages.map((image) => {
           return {
-            imgName: image.imgName,
+            imgName: process.env.AWS_LINK + image.imgPath,
           };
         }),
         eventDateAndTime: eventDateAndTime,
@@ -79,7 +94,7 @@ export const getOngoingEvents = async (req, res, next) => {
         category: event.category,
         eventImages: event.eventImages.map((image) => {
           return {
-            imgName: image.imgName,
+            imgName: process.env.AWS_LINK + image.imgPath,
           };
         }),
         eventDateAndTime: event.eventDateAndTime,
@@ -108,7 +123,7 @@ export const getCompletedEvents = async (req, res, next) => {
         category: event.category,
         eventImages: event.eventImages.map((image) => {
           return {
-            imgName: image.imgName,
+            imgName: process.env.AWS_LINK + image.imgPath,
           };
         }),
         eventDateAndTime: event.eventDateAndTime,
@@ -134,7 +149,9 @@ export const addEvent = async (req, res, next) => {
     if (!period) {
       period = "AM";
     }
-    const image = req.file.filename;
+    const image = req.s3Data;
+    const imageName = image.split("/")[1];
+    console.log(imageName);
 
     const convertedTime = convertTimeTo24Hour(time, period);
 
@@ -145,8 +162,8 @@ export const addEvent = async (req, res, next) => {
       category: radio,
       eventImages: [
         {
-          imgName: image,
-          imgPath: "uploads/" + image,
+          imgName: imageName,
+          imgPath: image,
           imgType: "image",
         },
       ],
@@ -362,7 +379,7 @@ export const eventFilterUser = async (req, res, next) => {
         category: event.category,
         eventImages: event.eventImages.map((image) => {
           return {
-            imgName: image.imgName,
+            imgName: process.env.AWS_LINK + image.imgPath,
           };
         }),
         eventDateAndTime: event.eventDateAndTime,
@@ -418,7 +435,7 @@ export const eventFilterAdmin = async (req, res, next) => {
         category: event.category,
         eventImages: event.eventImages.map((image) => {
           return {
-            imgName: image.imgName,
+            imgName: process.env.AWS_LINK + image.imgPath,
           };
         }),
         eventDateAndTime: event.eventDateAndTime,
