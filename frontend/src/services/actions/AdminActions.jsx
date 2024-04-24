@@ -135,6 +135,33 @@ export const useAdminActions = () => {
       toast.error(error.response.data.message);
     }
   };
+
+  const filteredEvents = async (filtering) => {
+    try {
+      if (filtering) {
+        const res = await axios.post(
+          URL + "/event/filterEventsAdmin",
+          filtering
+        );
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      } else {
+        const res = await axios.post(URL + "/event/filterEventsAdmin");
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
   return {
     login,
     createEvent,
@@ -145,6 +172,7 @@ export const useAdminActions = () => {
     approveRefund,
     rejectRefund,
     updateEventStatus,
+    filteredEvents,
     sendQRDatas,
   };
 };

@@ -1,15 +1,17 @@
 import EventCard from "./EventCard";
-import { useRecoilValue } from "recoil";
-import { upcomingEventAtom } from "../../store/atoms/eventsAtom";
-
 import UserFilterEvent from "./UserFilterEvent";
 import { useEffect, useState } from "react";
 import { useUserActions } from "../../services/actions/UserActions";
 
 const UpcomingEvents = () => {
-  const upcomingEvents = useRecoilValue(upcomingEventAtom);
   const userAction = useUserActions();
   const [events, setEvents] = useState([]);
+  const [filter, setFilter] = useState({
+    category: "",
+    venue: "",
+    startDate: "",
+    endDate: "",
+  });
   console.log(events);
   useEffect(() => {
     async function getData() {
@@ -25,7 +27,12 @@ const UpcomingEvents = () => {
         <h1 className=" text-3xl ">
           Upcoming <span className=" text-bluePurple">Events</span>
         </h1>
-        <UserFilterEvent setEvents={setEvents} />
+        <UserFilterEvent
+          setEvents={setEvents}
+          setFilter={setFilter}
+          filter={filter}
+          admin={false}
+        />
       </div>
       {events.length === 0 ? (
         <div>No Events</div>

@@ -2,18 +2,13 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useUserActions } from "../../services/actions/UserActions";
 import Button from "../common/Button";
+import { useAdminActions } from "../../services/actions/AdminActions";
 
-const UserFilterEvent = ({ setEvents }) => {
-  const [filter, setFilter] = useState({
-    category: "",
-    venue: "",
-    startDate: "",
-    endDate: "",
-  });
-  const [filterDrop, setFilterDrop] = useState(true);
+const UserFilterEvent = ({ setEvents, filter, setFilter, admin }) => {
+  const [filterDrop, setFilterDrop] = useState(false);
   const [venues, setVenues] = useState([]);
   const userAction = useUserActions();
-  console.log(filter);
+  const adminAction = useAdminActions();
   useEffect(() => {
     async function getAllVenues() {
       const data = await userAction.getAllVenues();
@@ -29,11 +24,17 @@ const UserFilterEvent = ({ setEvents }) => {
   }
 
   async function onClickSearch() {
-    const data = await userAction.filteredEvents(filter);
-    setEvents(data);
+    setFilterDrop(false);
+    if (admin) {
+      const data = await adminAction.filteredEvents(filter);
+      setEvents(data);
+    } else {
+      const data = await userAction.filteredEvents(filter);
+      setEvents(data);
+    }
   }
   return (
-    <div className="relative mt-3">
+    <div className="relative mt-3 ">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -56,7 +57,7 @@ const UserFilterEvent = ({ setEvents }) => {
             : `hidden`
         }
       >
-        <div className=" bg-ghostWhite">
+        <div className=" bg-ghostWhite p-4 rounded">
           <div className="flex">
             <label htmlFor="category">Category:</label>
             <select
@@ -107,16 +108,43 @@ const UserFilterEvent = ({ setEvents }) => {
               id="enddate"
             />
           </div>
+          {admin ? (
+            <div className="flex">
+              <label htmlFor="status">EventStatus:</label>
+              <select
+                value={filter.status}
+                name="status"
+                onChange={onChangeFilterHandler}
+                id="status"
+              >
+                <option value="">All</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          ) : null}
           <div className="flex justify-between">
             <Button
-              onClick={() =>
-                setFilter({
-                  category: "",
-                  venue: "",
-                  startdate: "",
-                  endDate: "",
-                })
-              }
+              onClick={() => {
+                setFilterDrop(false);
+                if (admin) {
+                  setFilter({
+                    category: "",
+                    venue: "",
+                    startdate: "",
+                    endDate: "",
+                    status: "",
+                  });
+                } else {
+                  setFilter({
+                    category: "",
+                    venue: "",
+                    startdate: "",
+                    endDate: "",
+                  });
+                }
+              }}
               name={"Reset"}
               styleclass={"bg-failureRed rounded  text-white "}
             />
