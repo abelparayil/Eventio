@@ -97,8 +97,7 @@ export const login = async (req, res, next) => {
       name: existingUser.name,
       role: "user",
     },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: "1h" }
+    process.env.JWT_SECRET_KEY
   );
 
   return res.status(200).json({

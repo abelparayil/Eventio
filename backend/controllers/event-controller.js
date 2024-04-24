@@ -12,6 +12,14 @@ const storage = multer.diskStorage({
   },
 });
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.split("/")[0] === "image") {
+    cb(null, true);
+  } else {
+    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
+  }
+};
+
 const convertTimeTo24Hour = (time, period) => {
   let [hours, minutes] = time.split(":");
   if (period === "PM") {
@@ -21,7 +29,11 @@ const convertTimeTo24Hour = (time, period) => {
 };
 
 export const upload = multer({
-  storage: storage,
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
 });
 
 export const getAllEvents = async (req, res, next) => {
@@ -396,7 +408,7 @@ export const eventFilterUser = async (req, res, next) => {
 };
 
 export const eventFilterAdmin = async (req, res, next) => {
-  const { venue, category, startDate, endDate, ongoing, completed, scheduled } = req.body;
+  const { venue, category, startDate, endDate, eventStatus } = req.body;
   const filter = {};
   if (venue) {
     filter.eventVenue = venue;
@@ -410,13 +422,13 @@ export const eventFilterAdmin = async (req, res, next) => {
       $lte: endDate,
     };
   }
-  if (ongoing) {
+  if ((eventStatus = "Ongoing")) {
     filter.eventOngoing = true;
   }
-  if (completed) {
+  if ((eventStatus = "Completed")) {
     filter.eventCompleted = true;
   }
-  if (scheduled) {
+  if ((eventStatus = "Scheduled")) {
     filter.eventOngoing = false;
     filter.eventCompleted = false;
   }
