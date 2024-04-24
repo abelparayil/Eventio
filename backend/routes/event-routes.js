@@ -29,7 +29,7 @@ eventRouter.post("/addEvent", verifyAdminToken, updateAdminToken, upload.single(
 eventRouter.post("/eventOngoing/:id", verifyAdminToken, convertEventToOngoing);
 eventRouter.post("/updateEvent/:id", verifyAdminToken, updateEvent);
 eventRouter.post("/eventCompleted/:id", verifyAdminToken, eventCompleted);
-eventRouter.post("/filterEventsUser", verifyUserToken, eventFilterUser);
+eventRouter.post("/filterEventsUser", eventFilterUser);
 eventRouter.post("/filterEventsAdmin", verifyAdminToken, eventFilterAdmin);
 
 eventRouter.delete("/deleteEvent/:id", verifyAdminToken, deleteEvent);
