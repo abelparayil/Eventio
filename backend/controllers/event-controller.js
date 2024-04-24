@@ -43,7 +43,6 @@ export const getAllEvents = async (req, res, next) => {
       let eventDateAndTime = event.eventDateAndTime;
       eventDateAndTime.setHours(eventDateAndTime.getHours() + 5);
       eventDateAndTime.setMinutes(eventDateAndTime.getMinutes() + 30);
-      console.log(eventDateAndTime);
 
       let eventStatus = "Scheduled";
 
@@ -282,7 +281,6 @@ export const updateEvent = async (req, res, next) => {
 export const deleteEvent = async (req, res, next) => {
   try {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id);
-    console.log(deletedEvent);
 
     if (!deletedEvent) {
       return res.status(404).json({
@@ -318,7 +316,7 @@ export const getEventBookings = async (req, res, next) => {
 
 export const getEventBookingsStudentDetails = async (req, res, next) => {
   const id = req.body.id;
-  console.log(id);
+
   const event = await Event.findById(id).populate({
     path: "bookings",
     select: "user",
@@ -327,7 +325,7 @@ export const getEventBookingsStudentDetails = async (req, res, next) => {
       select: "name email",
     },
   });
-  console.log(event);
+
   if (!event) {
     return res.status(404).json({
       message: "Event not found",
@@ -351,7 +349,7 @@ export const eventCompleted = async (req, res, next) => {
     await Event.findByIdAndUpdate(req.params.id, {
       eventCompleted: true,
     });
-    console.log(event);
+
     return res.status(200).json({
       message: "Event completed successfully",
     });

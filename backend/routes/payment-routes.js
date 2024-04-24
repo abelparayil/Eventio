@@ -8,7 +8,6 @@ import {
 } from "../controllers/payment-controller.js";
 import { verifyUserToken } from "../middleware/user-middleware.js";
 import { verifyAdminToken } from "../middleware/event-middleware.js";
-import { doesBookingExist } from "../controllers/booking-controller.js";
 
 const paymentRouter = express.Router();
 

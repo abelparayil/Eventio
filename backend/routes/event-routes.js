@@ -14,8 +14,7 @@ import {
   updateEvent,
   upload,
 } from "../controllers/event-controller.js";
-import { updateAdminToken, verifyAdminToken } from "../middleware/event-middleware.js";
-import { verifyUserToken } from "../middleware/user-middleware.js";
+import { verifyAdminToken } from "../middleware/event-middleware.js";
 
 const eventRouter = express.Router();
 
@@ -25,7 +24,7 @@ eventRouter.get("/bookings/:id", verifyAdminToken, getEventBookings);
 eventRouter.get("/:id", getEventById);
 eventRouter.get("/distinctCategory/:field", getCategoriesForFilter);
 
-eventRouter.post("/addEvent", verifyAdminToken, updateAdminToken, upload.single("image"), addEvent);
+eventRouter.post("/addEvent", verifyAdminToken, upload.single("image"), addEvent);
 eventRouter.post("/eventOngoing/:id", verifyAdminToken, convertEventToOngoing);
 eventRouter.post("/updateEvent/:id", verifyAdminToken, updateEvent);
 eventRouter.post("/eventCompleted/:id", verifyAdminToken, eventCompleted);
