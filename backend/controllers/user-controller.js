@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 export const getAllUsers = async (req, res, next) => {
   let users;
@@ -84,6 +85,50 @@ export const signUp = async (req, res, next) => {
   return res
     .status(201)
     .json({ message: "User created successfully. Check your email for verification" });
+};
+
+
+export const verifyUser = async (req, res, next) => {
+  const { email, verificationCode } = req.body;
+
+  if (
+    !email ||
+    (email && email.trim() === "") ||
+    !verificationCode ||
+    (verificationCode && verificationCode.trim() === "")
+  ) {
+    return res.status(422).json({ message: "Invalid inputs" });
+  }
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!existingUser) {
+    return res.status(404).json({ message: "User doesn't exist" });
+  }
+
+  if (existingUser.verificationCode !== verificationCode) {
+    return res.status(400).json({ message: "Invalid verification code" });
+  }
+
+  existingUser.verified = true;
+
+  try {
+    existingUser = await existingUser.save();
+  } catch (err) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  if (!existingUser) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  return res.status(200).json({ message: "User verified successfully" });
 };
 
 export const resendVerificationCode = async (req, res, next) => {

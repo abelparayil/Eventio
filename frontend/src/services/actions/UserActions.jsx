@@ -13,13 +13,13 @@ export const useUserActions = () => {
   const signup = async (name, email, password) => {
     try {
       const res = await axios.post(URL + "/user/signup", {
-        name,
-        email,
-        password,
+        name: name,
+        email: email,
+        password: password,
       });
       if (res.status == 201) {
         toast.success(res.data.message);
-        navigate("/user/login");
+        navigate("/user/signup/verification");
       }
       return res;
     } catch (error) {
@@ -36,8 +36,26 @@ export const useUserActions = () => {
     return res;
   };
 
+  const resendOTP = async (email) => {
+    try {
+      const res = await axios.post(URL + "/user/signup/checkemail", { email });
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
   const checkOTP = async (email, otp) => {
-    const res = await axios.post(URL + "/user/signup/otp", { email, otp });
+    try {
+      const res = await axios.post(URL + "/user/verifyEmail", {
+        email,
+        verificationCode: otp,
+      });
+      toast.success(res.data.message);
+      navigate("/user/login");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+
     return res;
   };
 
@@ -121,6 +139,9 @@ export const useUserActions = () => {
   return {
     signup,
     login,
+
+    resendOTP,
+
     checkEmail,
     getAllVenues,
     checkOTP,
