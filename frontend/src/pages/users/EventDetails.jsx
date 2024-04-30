@@ -17,11 +17,10 @@ const EventDetails = () => {
   const [errorImage, setErrorImage] = useState(false);
   const [eventdetails, setEventDetails] = useState({});
   const [loading, setLoading] = useState(false);
-  const auth = useRecoilValue(authAtom);
 
   const navigate = useNavigate();
 
-  const user = auth.name.toUpperCase();
+  const user = localStorage.getItem("userName");
   const { id } = useParams();
   const userActions = useCommonActions();
   async function displayRazorPay(id) {

@@ -85,6 +85,7 @@ export const getAllBooking = async (req, res, next) => {
       const eventDateAndTime = booking.event.eventDateAndTime;
       const eventVenue = booking.event.eventVenue;
       const eventPrice = booking.event.ticketPrice;
+      const ticketUsed = booking.ticketUsed;
 
       const eventObject = {
         eventId: event,
@@ -93,6 +94,7 @@ export const getAllBooking = async (req, res, next) => {
         eventVenue: eventVenue,
         eventPrice: eventPrice,
         refundStatus: refundStatus,
+        ticketUsed: ticketUsed,
       };
 
       eventIdsWithRefundStatus.push(eventObject);
@@ -152,11 +154,11 @@ export const doesBookingExist = async (req, res, next) => {
       event: eventId,
     });
 
-    if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+    if (booking) {
+      return res.status(404).json({ message: "Booking exists" });
     }
 
-    next();
+    res.status(200).json({ message: "Booking does not exist" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

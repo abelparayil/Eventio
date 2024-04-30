@@ -12,6 +12,14 @@ const storage = multer.diskStorage({
   },
 });
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.split("/")[0] === "image") {
+    cb(null, true);
+  } else {
+    cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
+  }
+};
+
 const convertTimeTo24Hour = (time, period) => {
   let [hours, minutes] = time.split(":");
   if (period === "PM") {
@@ -21,7 +29,11 @@ const convertTimeTo24Hour = (time, period) => {
 };
 
 export const upload = multer({
-  storage: storage,
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
 });
 
 export const getAllEvents = async (req, res, next) => {
@@ -31,7 +43,6 @@ export const getAllEvents = async (req, res, next) => {
       let eventDateAndTime = event.eventDateAndTime;
       eventDateAndTime.setHours(eventDateAndTime.getHours() + 5);
       eventDateAndTime.setMinutes(eventDateAndTime.getMinutes() + 30);
-      console.log(eventDateAndTime);
 
       let eventStatus = "Scheduled";
 
@@ -196,19 +207,41 @@ export const convertEventToOngoing = async (req, res, next) => {
 export const getEventById = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
-    const eventDetails = {
+
+    let eventDateAndTime = event.eventDateAndTime;
+    eventDateAndTime.setHours(eventDateAndTime.getHours() + 5);
+    eventDateAndTime.setMinutes(eventDateAndTime.getMinutes() + 30);
+
+    let eventStatus = "Scheduled";
+
+    if (event.eventOngoing) {
+      eventStatus = "Ongoing";
+    }
+
+    if (event.eventCompleted) {
+      eventStatus = "Completed";
+    }
+
+    const eventWithImages = {
       _id: event._id,
       eventTitle: event.eventTitle,
       category: event.category,
-      eventDateAndTime: event.eventDateAndTime,
+      eventImages: event.eventImages.map((image) => {
+        return {
+          imgName: image.imgName,
+        };
+      }),
+      eventDateAndTime: eventDateAndTime,
       eventVenue: event.eventVenue,
+      ticketPrice: event.ticketPrice,
+      description: event.description,
     };
-    if (!eventDetails) {
+    if (!eventWithImages) {
       return res.status(404).json({
         message: "Event not found",
       });
     }
-    res.status(200).json(eventDetails);
+    res.status(200).json(eventWithImages);
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
@@ -228,11 +261,6 @@ export const updateEvent = async (req, res, next) => {
     }
 
     event.eventTitle = eventData.eventTitle;
-    event.category = eventData.category;
-    event.eventDateAndTime = new Date(eventData.eventDateAndTime);
-    event.eventVenue = eventData.eventVenue;
-    event.ticketPrice = eventData.ticketPrice;
-    event.description = eventData.description;
 
     await event.save();
     res.status(200).json({
@@ -288,7 +316,7 @@ export const getEventBookings = async (req, res, next) => {
 
 export const getEventBookingsStudentDetails = async (req, res, next) => {
   const id = req.body.id;
-  console.log(id);
+
   const event = await Event.findById(id).populate({
     path: "bookings",
     select: "user",
@@ -297,7 +325,7 @@ export const getEventBookingsStudentDetails = async (req, res, next) => {
       select: "name email",
     },
   });
-  console.log(event);
+
   if (!event) {
     return res.status(404).json({
       message: "Event not found",
@@ -321,7 +349,7 @@ export const eventCompleted = async (req, res, next) => {
     await Event.findByIdAndUpdate(req.params.id, {
       eventCompleted: true,
     });
-    console.log(event);
+
     return res.status(200).json({
       message: "Event completed successfully",
     });
@@ -351,9 +379,7 @@ export const eventFilterUser = async (req, res, next) => {
   try {
     const events = await Event.find(filter);
     if (events.length === 0) {
-      return res.status(404).json({
-        message: "No events found",
-      });
+      return res.status(200).json([]);
     }
     const eventsWithImages = events.map((event) => {
       return {
@@ -380,7 +406,7 @@ export const eventFilterUser = async (req, res, next) => {
 };
 
 export const eventFilterAdmin = async (req, res, next) => {
-  const { venue, category, startDate, endDate, ongoing, completed, scheduled } = req.body;
+  const { venue, category, startDate, endDate, eventStatus } = req.body;
   const filter = {};
   if (venue) {
     filter.eventVenue = venue;
@@ -394,24 +420,31 @@ export const eventFilterAdmin = async (req, res, next) => {
       $lte: endDate,
     };
   }
-  if (ongoing) {
+  if ((eventStatus = "Ongoing")) {
     filter.eventOngoing = true;
   }
-  if (completed) {
+  if ((eventStatus = "Completed")) {
     filter.eventCompleted = true;
   }
-  if (scheduled) {
+  if ((eventStatus = "Scheduled")) {
     filter.eventOngoing = false;
     filter.eventCompleted = false;
   }
   try {
     const events = await Event.find(filter);
     if (events.length === 0) {
-      return res.status(404).json({
-        message: "No events found",
-      });
+      return res.status(200).json([]);
     }
     const eventsWithImages = events.map((event) => {
+      if (event.eventOngoing) {
+        event.eventStatus = "Ongoing";
+      }
+      if (event.eventCompleted) {
+        event.eventStatus = "Completed";
+      }
+      if (!event.eventOngoing && !event.eventCompleted) {
+        event.eventStatus = "Scheduled";
+      }
       return {
         _id: event._id,
         eventTitle: event.eventTitle,
@@ -423,6 +456,7 @@ export const eventFilterAdmin = async (req, res, next) => {
         }),
         eventDateAndTime: event.eventDateAndTime,
         eventVenue: event.eventVenue,
+        eventStatus: event.eventStatus,
         ticketPrice: event.ticketPrice,
         description: event.description,
       };

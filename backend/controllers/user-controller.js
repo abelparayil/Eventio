@@ -87,6 +87,7 @@ export const signUp = async (req, res, next) => {
     .json({ message: "User created successfully. Check your email for verification" });
 };
 
+
 export const verifyUser = async (req, res, next) => {
   const { email, verificationCode } = req.body;
 
@@ -211,8 +212,7 @@ export const login = async (req, res, next) => {
       name: existingUser.name,
       role: "user",
     },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: "1h" }
+    process.env.JWT_SECRET_KEY
   );
 
   return res.status(200).json({
@@ -221,6 +221,48 @@ export const login = async (req, res, next) => {
     name: existingUser.name,
     email: existingUser.email,
   });
+};
+export const verifyUser = async (req, res, next) => {
+  const { email, verificationCode } = req.body;
+
+  if (
+    !email ||
+    (email && email.trim() === "") ||
+    !verificationCode ||
+    (verificationCode && verificationCode.trim() === "")
+  ) {
+    return res.status(422).json({ message: "Invalid inputs" });
+  }
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (err) {
+    return console.log(err);
+  }
+
+  if (!existingUser) {
+    return res.status(404).json({ message: "User doesn't exist" });
+  }
+
+  if (existingUser.verificationCode != verificationCode) {
+    return res.status(400).json({ message: "Invalid verification code" });
+  }
+
+  existingUser.verified = true;
+
+  try {
+    existingUser = await existingUser.save();
+  } catch (err) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  if (!existingUser) {
+    return res.status(500).json({ message: "Unexpected error occured" });
+  }
+
+  return res.status(200).json({ message: "User verified successfully" });
 };
 
 export const resetPassword = async (req, res, next) => {

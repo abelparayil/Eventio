@@ -2,6 +2,7 @@ import express from "express";
 import {
   addBooking,
   deleteBooking,
+  doesBookingExist,
   getAllBooking,
   getBookingId,
   useTicket,
@@ -18,6 +19,7 @@ bookingRouter.get("/getBooking/:eventId", verifyUserToken, getBookingId);
 bookingRouter.post("/bookEvent/:eventId", verifyUserToken, addBooking);
 bookingRouter.post("/getStudentDetails", verifyAdminToken, getEventBookingsStudentDetails);
 bookingRouter.post("/ticketScan", verifyAdminToken, useTicket);
+bookingRouter.post("/doesBookingExist/:eventId", verifyUserToken, doesBookingExist);
 
 bookingRouter.delete("/cancelBooking/:id", verifyUserToken, deleteBooking);
 

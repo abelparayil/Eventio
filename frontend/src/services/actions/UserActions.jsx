@@ -139,7 +139,9 @@ export const useUserActions = () => {
   return {
     signup,
     login,
+
     resendOTP,
+
     checkEmail,
     getAllVenues,
     checkOTP,
