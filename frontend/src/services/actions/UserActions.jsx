@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { authAtom } from "../../store/atoms/authatom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { isoToNormalDate } from "../../util/TimeConversion";
 
 export const useUserActions = () => {
   const URL = "http://localhost:9000";
@@ -12,13 +13,13 @@ export const useUserActions = () => {
   const signup = async (name, email, password) => {
     try {
       const res = await axios.post(URL + "/user/signup", {
-        name,
-        email,
-        password,
+        name: name,
+        email: email,
+        password: password,
       });
       if (res.status == 201) {
         toast.success(res.data.message);
-        navigate("/user/login");
+        navigate("/user/signup/verification");
       }
       return res;
     } catch (error) {
@@ -35,8 +36,26 @@ export const useUserActions = () => {
     return res;
   };
 
+  const resendOTP = async (email) => {
+    try {
+      const res = await axios.post(URL + "/user/signup/checkemail", { email });
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
   const checkOTP = async (email, otp) => {
-    const res = await axios.post(URL + "/user/signup/otp", { email, otp });
+    try {
+      const res = await axios.post(URL + "/user/verifyEmail", {
+        email,
+        verificationCode: otp,
+      });
+      toast.success(res.data.message);
+      navigate("/user/login");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+
     return res;
   };
 
@@ -45,6 +64,8 @@ export const useUserActions = () => {
       const res = await axios.post(URL + "/user/login", { email, password });
       if (res.status === 200) {
         localStorage.setItem("user", res.data.token);
+        localStorage.setItem("userName", res.data.name);
+        localStorage.setItem("email", res.data.email);
         setAuth((prev) => ({
           ...prev,
           token: res.data.token,
@@ -79,5 +100,51 @@ export const useUserActions = () => {
       toast.error(error.response.data.message);
     }
   };
-  return { signup, login, checkEmail, checkOTP, getAllTickets, sendMessage };
+
+  const getAllVenues = async () => {
+    try {
+      const res = await axios.get(URL + "/event/distinctCategory/eventVenue");
+      return res.data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const filteredEvents = async (filtering) => {
+    try {
+      if (filtering) {
+        const res = await axios.post(
+          URL + "/event/filterEventsUser",
+          filtering
+        );
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      } else {
+        const res = await axios.post(URL + "/event/filterEventsUser");
+        const filter = res.data.filter((event) => {
+          return (event.eventDateAndTime = isoToNormalDate(
+            event.eventDateAndTime
+          ));
+        });
+        return filter;
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+  return {
+    signup,
+    login,
+    resendOTP,
+    checkEmail,
+    getAllVenues,
+    checkOTP,
+    getAllTickets,
+    sendMessage,
+    filteredEvents,
+  };
 };

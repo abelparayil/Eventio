@@ -3,8 +3,8 @@ import { useUserActions } from "../../services/actions/UserActions";
 import { useForm } from "react-hook-form";
 import "react-toastify/dist/ReactToastify.css";
 import signupImage from "../../assets/images/signup.png";
-// import { useSetRecoilState } from "recoil";
-// import { userDataAtom } from "../../store/atoms/userAtom";
+import { useSetRecoilState } from "recoil";
+import { userDataAtom } from "../../store/atoms/userAtom";
 const SignUp = () => {
   const {
     register,
@@ -15,11 +15,14 @@ const SignUp = () => {
   console.log(register);
   const userActions = useUserActions();
   const navigate = useNavigate();
-  // const setUserData = useSetRecoilState(userDataAtom);
+  const setUserData = useSetRecoilState(userDataAtom);
 
   async function onSubmit({ name, email, password }) {
     // const checkEmail = await userActions.checkEmail({ name, email, password });
     const resSubmit = await userActions.signup(name, email, password);
+    setUserData({
+      email: email,
+    });
     return resSubmit;
 
     // if (checkEmail) {
